@@ -41,7 +41,7 @@ const Header: React.FC<HeaderProps> = ({ onMusicClick }) => {
       </div>
       
       <div className="flex items-center gap-8">
-        <nav className="flex gap-6">
+        <nav className="flex flex-wrap justify-center items-center gap-6">
           {links.map((link) => {
             const isActive = activeHash === link.url;
             return (
@@ -62,7 +62,7 @@ const Header: React.FC<HeaderProps> = ({ onMusicClick }) => {
         {/* Music Toggle Button */}
         <button 
           onClick={onMusicClick}
-          className="w-10 h-10 flex items-center justify-center rounded-full border border-[#00bfff]/30 text-[#00bfff] hover:bg-[#00bfff]/10 hover:shadow-[0_0_10px_#00bfff] transition-all duration-300"
+          className="w-10 h-10 flex items-center justify-center rounded-full border border-[#00bfff]/30 text-[#00bfff] hover:bg-[#00bfff]/10 hover:shadow-[0_0_10px_#00bfff] transition-all duration-300 flex-shrink-0"
           title="Music Player"
         >
           <Music size={20} />
