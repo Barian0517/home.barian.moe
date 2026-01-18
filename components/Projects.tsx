@@ -31,8 +31,8 @@ const Projects: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <div className="mb-10 flex items-center justify-between border-b border-white/10 pb-4">
            <h2 className="text-3xl md:text-4xl font-bold text-white font-['Orbitron'] tracking-wider">
-            <GlitchText text="相關作品" />
-            <span className="text-[#90ee90] text-lg ml-4 font-['Rajdhani'] opacity-70">/ GITHUB REPOSITORIES</span>
+            <GlitchText text="GitHub 倉庫" />
+            <span className="text-[#90ee90] text-lg ml-4 font-['Rajdhani'] opacity-70">/ CODE REPOSITORIES</span>
           </h2>
           <div className="text-[#90ee90] font-['Rajdhani'] hidden md:block">
              Fetching from: github.com/Barian0517

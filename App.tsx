@@ -6,6 +6,7 @@ import Header from './components/Header';
 import ProfileCard from './components/ProfileCard';
 import About from './components/About';
 import Projects from './components/Projects';
+import Workshop from './components/Workshop';
 import MiniGame from './components/MiniGame';
 import MusicPlayer from './components/MusicPlayer';
 
@@ -51,6 +52,9 @@ const App: React.FC = () => {
           )}
            {currentView === 'projects' && (
              <Projects key="projects" />
+          )}
+          {currentView === 'workshop' && (
+             <Workshop key="workshop" />
           )}
         </AnimatePresence>
       </main>

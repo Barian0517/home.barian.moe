@@ -6,7 +6,8 @@ import { Music } from 'lucide-react';
 const links: NavLink[] = [
   { name: '首頁', url: '#home' },
   { name: '關於', url: '#about' },
-  { name: '相關作品', url: '#projects' }
+  { name: '我的工坊', url: '#workshop' },
+  { name: 'GitHub倉庫', url: '#projects' }
 ];
 
 interface HeaderProps {

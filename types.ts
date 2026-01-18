@@ -43,3 +43,13 @@ export interface Song {
   title: string;
   url: string;
 }
+
+export interface WorkshopItem {
+  id: number;
+  title: string;
+  description: string;
+  imageUrl?: string;
+  linkUrl: string;
+  tags: string[];
+  date?: string;
+}
