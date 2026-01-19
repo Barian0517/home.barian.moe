@@ -16,23 +16,35 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isOpen, onClose }) => {
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Load songs using Vite's import.meta.glob
+  // Load songs safely
   useEffect(() => {
     const loadSongs = async () => {
-      // This assumes files are in src/assets/mp3/
-      // Fix: Cast import.meta to any to access glob method which is a Vite extension
-      const modules = (import.meta as any).glob('/src/assets/mp3/*.mp3', { eager: true });
-      
-      const songList: Song[] = Object.entries(modules).map(([path, module]) => {
-        // Extract filename as title
-        const fileName = path.split('/').pop()?.replace('.mp3', '') || 'Unknown Track';
-        return {
-          title: decodeURIComponent(fileName),
-          url: (module as any).default
-        };
-      });
+      // Check if import.meta.glob is supported (Vite feature)
+      const meta = import.meta as any;
+      if (typeof meta.glob !== 'function') {
+        console.warn("import.meta.glob is not supported in this environment");
+        setSongs([]);
+        return;
+      }
 
-      setSongs(songList);
+      try {
+        // This assumes files are in src/assets/mp3/
+        const modules = meta.glob('/src/assets/mp3/*.mp3', { eager: true });
+        
+        const songList: Song[] = Object.entries(modules).map(([path, module]) => {
+          // Extract filename as title
+          const fileName = path.split('/').pop()?.replace('.mp3', '') || 'Unknown Track';
+          return {
+            title: decodeURIComponent(fileName),
+            url: (module as any).default
+          };
+        });
+
+        setSongs(songList);
+      } catch (error) {
+        console.error("Error loading songs:", error);
+        setSongs([]);
+      }
     };
 
     loadSongs();
@@ -42,7 +54,13 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (audioRef.current) {
       if (isPlaying) {
-        audioRef.current.play().catch(e => console.log("Autoplay prevented:", e));
+        const playPromise = audioRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(e => {
+            console.warn("Autoplay prevented:", e);
+            // Optionally reset isPlaying if you want strict sync with audio state
+          });
+        }
       } else {
         audioRef.current.pause();
       }
@@ -57,11 +75,13 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isOpen, onClose }) => {
   }, [volume, isMuted]);
 
   const handleNext = () => {
+    if (songs.length === 0) return;
     setCurrentSongIndex((prev) => (prev + 1) % songs.length);
     setIsPlaying(true);
   };
 
   const handlePrev = () => {
+    if (songs.length === 0) return;
     setCurrentSongIndex((prev) => (prev - 1 + songs.length) % songs.length);
     setIsPlaying(true);
   };
@@ -83,7 +103,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isOpen, onClose }) => {
                 <h3 className="text-[#00bfff] font-['Orbitron'] text-sm">MUSIC PLAYER</h3>
                 <button onClick={onClose} className="text-gray-400 hover:text-white"><X size={16}/></button>
              </div>
-             <div className="text-xs text-gray-400">No MP3 files found in src/assets/mp3/</div>
+             <div className="text-xs text-gray-400">
+               No music found.
+               <br />
+               (import.meta.glob is unavailable)
+             </div>
         </motion.div>
     );
   }

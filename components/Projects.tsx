@@ -27,7 +27,7 @@ const Projects: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen p-4 pt-28 pb-20 relative z-10 overflow-y-auto">
+    <div id="github-repo-page" className="min-h-screen p-4 pt-28 pb-20 relative z-10 overflow-y-auto">
       <div className="max-w-7xl mx-auto">
         <div className="mb-10 flex items-center justify-between border-b border-white/10 pb-4">
            <h2 className="text-3xl md:text-4xl font-bold text-white font-['Orbitron'] tracking-wider">

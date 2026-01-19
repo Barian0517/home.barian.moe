@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import Background from './components/Background';
 import MouseCanvas from './components/MouseCanvas';
@@ -11,41 +11,39 @@ import MiniGame from './components/MiniGame';
 import MusicPlayer from './components/MusicPlayer';
 
 const App: React.FC = () => {
+  // 預設顯示首頁，不再讀取 hash
   const [currentView, setCurrentView] = useState('home');
   const [showMusicPlayer, setShowMusicPlayer] = useState(false);
 
-  useEffect(() => {
-    const handleHashChange = () => {
-      // Get hash, remove #, default to 'home' if empty
-      const hash = window.location.hash.replace('#', '') || 'home';
-      setCurrentView(hash);
-    };
-
-    // Listen for hash changes
-    window.addEventListener('hashchange', handleHashChange);
-    
-    // Set initial state
-    handleHashChange();
-
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
+  // 純 JS 導航處理函式
+  const handleNavigate = (view: string) => {
+    setCurrentView(view);
+    // 切換頁面時平滑滾動到頂部
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    console.log('切換到'+view);
+  };
 
   return (
-    <div className="relative min-h-screen text-white overflow-hidden scanlines">
-      {/* Visual Layers */}
+    // 使用 overflow-x-hidden 允許垂直滾動，同時保留 scanlines 效果
+    <div className="relative min-h-screen text-white overflow-x-hidden scanlines">
+      {/* 視覺層 (固定背景) */}
       <Background />
       <MouseCanvas />
       
-      {/* UI Layers */}
-      <Header onMusicClick={() => setShowMusicPlayer(!showMusicPlayer)} />
+      {/* UI 層 */}
+      <Header 
+        currentView={currentView} 
+        onNavigate={handleNavigate}
+        onMusicClick={() => setShowMusicPlayer(!showMusicPlayer)} 
+      />
       
-      {/* Music Player Component (Always rendered to keep audio playing, visibility controlled by props) */}
+      {/* 音樂播放器組件 */}
       <MusicPlayer isOpen={showMusicPlayer} onClose={() => setShowMusicPlayer(false)} />
 
       <main className="relative z-10">
         <AnimatePresence mode="wait">
           {currentView === 'home' && (
-             <ProfileCard key="home" />
+             <ProfileCard key="home" onNavigate={handleNavigate} />
           )}
           {currentView === 'about' && (
              <About key="about" />
@@ -59,7 +57,7 @@ const App: React.FC = () => {
         </AnimatePresence>
       </main>
       
-      {/* Interactive Layers */}
+      {/* 互動層 */}
       <MiniGame />
     </div>
   );

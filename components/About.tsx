@@ -4,7 +4,7 @@ import GlitchText from './GlitchText';
 
 const About: React.FC = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 pt-24 relative z-10">
+    <div id="about-page" className="min-h-screen flex items-center justify-center p-4 pt-24 relative z-10">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}

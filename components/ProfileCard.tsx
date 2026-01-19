@@ -12,13 +12,18 @@ const socials: SocialLink[] = [
   { name: 'GitHub', url: 'https://github.com/Barian0517', icon: <Github size={20} />, color: '#ffffff' },
 ];
 
-const mainLinks = [
-  { name: '自我介紹', url: 'http://barian.moe/', icon: <Globe size={16} /> },
-  { name: '我的YT', url: 'https://www.youtube.com/@barian0517', icon: <Youtube size={16} /> },
-  { name: 'MC伺服器官網', url: 'https://mcweb.barian.moe', icon: <Server size={16} /> },
-];
+interface ProfileCardProps {
+  onNavigate: (view: string) => void;
+}
 
-const ProfileCard: React.FC = () => {
+const ProfileCard: React.FC<ProfileCardProps> = ({ onNavigate }) => {
+  // 定義連結，區分內部視圖與外部 URL
+  const mainLinks = [
+    { name: '自我介紹', isInternal: true, view: 'about', icon: <Globe size={16} /> },
+    { name: '我的YT', isInternal: false, url: 'https://www.youtube.com/@barian0517', icon: <Youtube size={16} /> },
+    { name: 'MC伺服器官網', isInternal: false, url: 'https://mcweb.barian.moe', icon: <Server size={16} /> },
+  ];
+
   // 使用 MotionValue 直接儲存目標旋轉角度 (Degrees)
   const rotateXTarget = useMotionValue(0);
   const rotateYTarget = useMotionValue(0);
@@ -77,7 +82,7 @@ const ProfileCard: React.FC = () => {
   }, [rotateXTarget, rotateYTarget]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 pt-24 relative z-10 perspective-1000">
+    <div id="profile-card-page" className="min-h-screen flex items-center justify-center p-4 pt-24 relative z-10 perspective-1000">
       {/* perspective 設置於外層容器 */}
       <div style={{ perspective: '1200px' }} className="w-full max-w-4xl flex justify-center">
         
@@ -174,23 +179,34 @@ const ProfileCard: React.FC = () => {
                 <div>
                     <p className="text-[#00bfff] font-['Orbitron'] text-sm mb-4 tracking-widest uppercase">System Links</p>
                     <div className="flex flex-wrap gap-3">
-                        {mainLinks.map((link, i) => (
-                            <motion.a
-                                key={link.name}
-                                href={link.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.4 + (i * 0.1) }}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="flex items-center gap-2 px-6 py-3 bg-[#1a2233] border border-[#00bfff]/30 rounded-lg text-white font-bold hover:bg-[#00bfff] hover:text-black transition-all duration-300 shadow-[0_0_10px_rgba(0,191,255,0.1)] hover:shadow-[0_0_20px_rgba(0,191,255,0.6)]"
-                            >
-                                {link.icon}
-                                {link.name}
-                            </motion.a>
-                        ))}
+                        {mainLinks.map((link, i) => {
+                            // 判斷是否為內部連結
+                            const isInternal = link.isInternal;
+                            const href = isInternal ? undefined : link.url;
+                            const onClick = isInternal ? () => onNavigate(link.view!) : undefined;
+                            
+                            // 使用動態組件標籤：外部連結用 'a'，內部連結用 'button'
+                            const Component = isInternal ? motion.button : motion.a;
+
+                            return (
+                              <Component
+                                  key={link.name}
+                                  href={href}
+                                  onClick={onClick}
+                                  target={isInternal ? undefined : "_blank"}
+                                  rel={isInternal ? undefined : "noopener noreferrer"}
+                                  initial={{ opacity: 0, y: 20 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ delay: 0.4 + (i * 0.1) }}
+                                  whileHover={{ scale: 1.05 }}
+                                  whileTap={{ scale: 0.95 }}
+                                  className="flex items-center gap-2 px-6 py-3 bg-[#1a2233] border border-[#00bfff]/30 rounded-lg text-white font-bold hover:bg-[#00bfff] hover:text-black transition-all duration-300 shadow-[0_0_10px_rgba(0,191,255,0.1)] hover:shadow-[0_0_20px_rgba(0,191,255,0.6)] cursor-pointer"
+                              >
+                                  {link.icon}
+                                  {link.name}
+                              </Component>
+                            );
+                        })}
                     </div>
                 </div>
             </div>

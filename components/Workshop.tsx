@@ -1,42 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Monitor, Tag, Cpu, Layout, Wrench } from 'lucide-react';
+import { ExternalLink, Monitor, Tag, Cpu, Layout, Wrench, AppWindow, Terminal } from 'lucide-react';
 import { WorkshopItem } from '../types';
 import GlitchText from './GlitchText';
 
-// 展示類作品資料
-const displayItems: WorkshopItem[] = [
-  {
-    id: 1,
-    title: "個人形象網站 - 幽影櫻",
-    description: "基於 React + Vite + Tailwind CSS 打造的賽博風格網站，包含粒子特效與互動動畫，用來通往我的其他網站。",
-    imageUrl: "", 
-    linkUrl: "https://home.barian.moe",
-    tags: ["React", "UI/UX", "Animation"],
-    date: "2025"
-  },
-  {
-    id: 2,
-    title: "自我介紹主頁",
-    description: "個人介紹頁面，作為網路身份的名片，讓人容易了解我",
-    imageUrl: "", 
-    linkUrl: "https://barian.moe",
-    tags: ["HTML", "CSS", "Portfolio"],
-    date: "2025"
-  },
-  {
-    id: 3,
-    title: "Minecraft 伺服器官網",
-    description: "專為私人 Minecraft 伺服器設計的官方網站，提供伺服器資訊介紹與社群連結。",
-    imageUrl: "", 
-    linkUrl: "https://mcweb.barian.moe",
-    tags: ["Web Design", "Minecraft", "Docs"],
-    date: "2025"
-  }
-];
+// ==========================================
+// DATA DEFINITIONS
+// ==========================================
 
-// 功能類工具資料
-const functionalItems: WorkshopItem[] = [
+// 1. 網頁工具 (Web Tools) - 原 Functional Items
+const webToolItems: WorkshopItem[] = [
   {
     id: 101,
     title: "MC NBT 玩家資料編輯器",
@@ -66,87 +39,249 @@ const functionalItems: WorkshopItem[] = [
   }
 ];
 
+// 2. 靜態網頁 (Static Web) - 原 Display Items
+const staticWebItems: WorkshopItem[] = [
+  {
+    id: 1,
+    title: "個人形象網站 - 幽影櫻",
+    description: "基於 React + Vite + Tailwind CSS 打造的賽博風格網站，包含粒子特效與互動動畫，用來通往我的其他網站。",
+    imageUrl: "", 
+    linkUrl: "https://home.barian.moe",
+    tags: ["React", "UI/UX", "Animation"],
+    date: "2025"
+  },
+  {
+    id: 2,
+    title: "自我介紹主頁",
+    description: "個人介紹頁面，作為網路身份的名片，讓人容易了解我",
+    imageUrl: "", 
+    linkUrl: "https://barian.moe",
+    tags: ["HTML", "CSS", "Portfolio"],
+    date: "2025"
+  },
+  {
+    id: 3,
+    title: "Minecraft 伺服器官網",
+    description: "專為私人 Minecraft 伺服器設計的官方網站，提供伺服器資訊介紹與社群連結。",
+    imageUrl: "", 
+    linkUrl: "https://mcweb.barian.moe",
+    tags: ["Web Design", "Minecraft", "Docs"],
+    date: "2025"
+  }
+];
+
+// 3. 程式應用 (Applications) - 新增分類
+const appItems: WorkshopItem[] = [
+  {
+    id: 201,
+    title: "ModSync v2",
+    description: "Minecraft 模組同步工具，自動化檢測與更新客戶端模組，確保與伺服器版本一致，解決版本不相容問題。",
+    imageUrl: "", // 如果有截圖可以填入
+    linkUrl: "https://github.com/Barian0517/modsync-v2",
+    tags: ["Python", "Automation", "CLI Tool"],
+    date: "2025"
+  }
+];
+
+type CategoryType = 'web-tools' | 'static-web' | 'apps';
+
 const Workshop: React.FC = () => {
-  return (
-    <div className="min-h-screen p-4 pt-28 pb-20 relative z-10 overflow-y-auto">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-10 flex items-center justify-between border-b border-white/10 pb-4">
-           <h2 className="text-3xl md:text-4xl font-bold text-white font-['Orbitron'] tracking-wider">
-            <GlitchText text="我的工坊" />
-            <span className="text-[#ff00ff] text-lg ml-4 font-['Rajdhani'] opacity-70">/ WEB WORKSHOP</span>
-          </h2>
-          <div className="text-[#ff00ff] font-['Rajdhani'] hidden md:block">
-             DESIGN & DEV
-          </div>
-        </div>
+  const [activeTab, setActiveTab] = useState<CategoryType>('web-tools');
 
-        {/* Section 1: Display (展示類) */}
-        <div className="mb-16">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-3 mb-6"
-          >
-            <Layout className="text-[#00bfff]" size={24} />
-            <h3 className="text-2xl font-bold text-white font-['Zen_Maru_Gothic']">
-              展示類作品 <span className="text-sm text-gray-500 font-['Rajdhani'] ml-2">// SHOWCASE</span>
-            </h3>
-          </motion.div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {displayItems.map((item, index) => (
-              <WorkshopCard key={item.id} item={item} index={index} type="display" />
-            ))}
-          </div>
-        </div>
+  // Helper to get current items
+  const getCurrentItems = () => {
+    switch (activeTab) {
+      case 'web-tools': return webToolItems;
+      case 'static-web': return staticWebItems;
+      case 'apps': return appItems;
+      default: return [];
+    }
+  };
 
-        {/* Section 2: Functional (功能類) */}
-        <div>
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex items-center gap-3 mb-6"
-          >
-            <Wrench className="text-[#ffbd00]" size={24} />
-            <h3 className="text-2xl font-bold text-white font-['Zen_Maru_Gothic']">
-              功能類工具 <span className="text-sm text-gray-500 font-['Rajdhani'] ml-2">// UTILITIES & APPS</span>
-            </h3>
-          </motion.div>
+  // Helper for color themes
+  const getThemeColor = (tab: CategoryType) => {
+    switch (tab) {
+      case 'web-tools': return '#ffbd00'; // Yellow
+      case 'static-web': return '#00bfff'; // Blue
+      case 'apps': return '#ff00ff'; // Purple/Pink
+    }
+  };
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {functionalItems.map((item, index) => (
-              <WorkshopCard key={item.id} item={item} index={index} type="functional" />
-            ))}
-          </div>
-        </div>
-
-      </div>
-    </div>
-  );
-};
-
-const WorkshopCard: React.FC<{ item: WorkshopItem; index: number; type: 'display' | 'functional' }> = ({ item, index, type }) => {
-  // Define theme colors based on type
-  const themeColor = type === 'display' ? '#00bfff' : '#ffbd00';
-  const shadowColor = type === 'display' ? 'rgba(0,191,255,0.15)' : 'rgba(255,189,0,0.15)';
-  const hoverShadowColor = type === 'display' ? 'rgba(0,191,255,0.2)' : 'rgba(255,189,0,0.2)';
+  const themeColor = getThemeColor(activeTab);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+      id="workshop-page" 
+      className="min-h-screen p-4 pt-28 pb-20 relative z-10 overflow-y-auto"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className="max-w-7xl mx-auto">
+        
+        {/* Header */}
+        <div className="mb-8 flex flex-col md:flex-row items-start md:items-center justify-between border-b border-white/10 pb-4 gap-4">
+           <h2 className="text-3xl md:text-4xl font-bold text-white font-['Orbitron'] tracking-wider">
+            <GlitchText text="我的工坊" />
+            <span 
+              className="text-lg ml-4 font-['Rajdhani'] opacity-70 transition-colors duration-500"
+              style={{ color: themeColor }}
+            >
+              / WORKSHOP
+            </span>
+          </h2>
+          
+          {/* Category Tabs */}
+          <div className="flex flex-wrap gap-2 md:gap-4">
+            <TabButton 
+              label="網頁工具" 
+              subLabel="WEB TOOLS"
+              isActive={activeTab === 'web-tools'} 
+              onClick={() => setActiveTab('web-tools')}
+              icon={<Wrench size={16} />}
+              color="#ffbd00"
+            />
+            <TabButton 
+              label="靜態網頁" 
+              subLabel="STATIC WEB"
+              isActive={activeTab === 'static-web'} 
+              onClick={() => setActiveTab('static-web')}
+              icon={<Layout size={16} />}
+              color="#00bfff"
+            />
+            <TabButton 
+              label="程式應用" 
+              subLabel="APPLICATIONS"
+              isActive={activeTab === 'apps'} 
+              onClick={() => setActiveTab('apps')}
+              icon={<Terminal size={16} />}
+              color="#ff00ff"
+            />
+          </div>
+        </div>
+
+        {/* Content Grid */}
+        <div className="min-h-[400px]">
+          {/* 
+            Fixed: Added explicit exit prop and removed layoutId from children 
+            to ensure AnimatePresence in App.tsx can successfully unmount this component.
+          */}
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20, transition: { duration: 0.1 } }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            {getCurrentItems().map((item, index) => (
+              <WorkshopCard 
+                key={item.id} 
+                item={item} 
+                index={index} 
+                themeColor={themeColor}
+                category={activeTab}
+              />
+            ))}
+          </motion.div>
+        </div>
+
+      </div>
+    </motion.div>
+  );
+};
+
+// ==========================================
+// SUB COMPONENTS
+// ==========================================
+
+interface TabButtonProps {
+  label: string;
+  subLabel: string;
+  isActive: boolean;
+  onClick: () => void;
+  icon: React.ReactNode;
+  color: string;
+}
+
+const TabButton: React.FC<TabButtonProps> = ({ label, subLabel, isActive, onClick, icon, color }) => (
+  <button
+    onClick={onClick}
+    className={`relative px-4 py-2 md:px-6 md:py-3 rounded-lg border flex items-center gap-2 transition-all duration-300 group overflow-hidden ${
+      isActive ? 'bg-white/10' : 'bg-transparent hover:bg-white/5'
+    }`}
+    style={{
+      borderColor: isActive ? color : 'rgba(255,255,255,0.1)',
+      boxShadow: isActive ? `0 0 15px ${color}40` : 'none'
+    }}
+  >
+    <span style={{ color: isActive ? color : '#9ca3af' }} className="transition-colors duration-300">
+      {icon}
+    </span>
+    <div className="flex flex-col items-start">
+      <span 
+        className={`font-['Zen_Maru_Gothic'] font-bold text-sm md:text-base transition-colors duration-300 ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-gray-200'}`}
+      >
+        {label}
+      </span>
+      <span className="text-[10px] font-['Rajdhani'] text-gray-500 tracking-wider hidden md:block">
+        {subLabel}
+      </span>
+    </div>
+    
+    {/* Active Indicator Line - Removed layoutId to prevent unmount hangs */}
+    {isActive && (
+      <motion.div 
+        className="absolute bottom-0 left-0 w-full h-[2px]"
+        style={{ backgroundColor: color }}
+        initial={{ opacity: 0, scaleX: 0 }}
+        animate={{ opacity: 1, scaleX: 1 }}
+        transition={{ duration: 0.3 }}
+      />
+    )}
+  </button>
+);
+
+const WorkshopCard: React.FC<{ 
+  item: WorkshopItem; 
+  index: number; 
+  themeColor: string;
+  category: CategoryType;
+}> = ({ item, index, themeColor, category }) => {
+  const shadowColor = `${themeColor}26`; // 15% opacity hex roughly
+
+  // Icon selection based on category
+  const getIcon = () => {
+    switch (category) {
+      case 'web-tools': return <Cpu size={48} color={themeColor} className="opacity-30 mb-2 group-hover:opacity-100 transition-opacity duration-500" />;
+      case 'static-web': return <Monitor size={48} color={themeColor} className="opacity-30 mb-2 group-hover:opacity-100 transition-opacity duration-500" />;
+      case 'apps': return <AppWindow size={48} color={themeColor} className="opacity-30 mb-2 group-hover:opacity-100 transition-opacity duration-500" />;
+    }
+  };
+
+  const getLabel = () => {
+    switch (category) {
+      case 'web-tools': return 'WEB TOOL';
+      case 'static-web': return 'STATIC SITE';
+      case 'apps': return 'APPLICATION';
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: index * 0.1 }}
       className="group relative bg-[#1a2233]/60 backdrop-blur-md border border-white/5 rounded-xl overflow-hidden transition-all duration-300 flex flex-col h-full hover:scale-[1.02]"
       style={{
         borderColor: `rgba(255,255,255,0.05)`
       }}
     >
-      {/* Hover Glow Effect via Inline Style for dynamic color */}
+      {/* Hover Glow Effect */}
       <div 
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-        style={{ boxShadow: `inset 0 0 20px ${hoverShadowColor}, 0 0 20px ${shadowColor}` }}
+        style={{ boxShadow: `inset 0 0 20px ${shadowColor}, 0 0 20px ${shadowColor}` }}
       />
 
       {/* Image / Preview Area */}
@@ -170,14 +305,10 @@ const WorkshopCard: React.FC<{ item: WorkshopItem; index: number; type: 'display
                  backgroundSize: '24px 24px'
              }}></div>
              
-             {type === 'display' ? (
-                <Monitor size={48} color={themeColor} className="opacity-30 mb-2 group-hover:opacity-100 transition-opacity duration-500" />
-             ) : (
-                <Cpu size={48} color={themeColor} className="opacity-30 mb-2 group-hover:opacity-100 transition-opacity duration-500" />
-             )}
+             {getIcon()}
              
              <span className="text-white/20 font-['Orbitron'] text-sm">
-                {type === 'display' ? 'WEB PREVIEW' : 'APP SYSTEM'}
+                {getLabel()}
              </span>
           </div>
         )}
@@ -243,7 +374,7 @@ const WorkshopCard: React.FC<{ item: WorkshopItem; index: number; type: 'display
               }}
             >
               <ExternalLink size={18} />
-              {type === 'display' ? '訪問網站' : '啟動工具'}
+              {category === 'apps' ? '查看專案' : (category === 'static-web' ? '訪問網站' : '啟動工具')}
             </a>
         </div>
       </div>
