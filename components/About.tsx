@@ -54,7 +54,7 @@ const About: React.FC = () => {
             className="p-4 bg-white/5 rounded-lg border-r-4 border-[#ff00ff] text-right"
           >
             <p>
-              最近主要投入在 <span className="text-[#ff00ff] font-bold">Minecraft</span> 相關的技術研究。
+              最近主要投入在 <span className="text-[#ff00ff] font-bold">root  EDL 與 解鎖bootloader</span> 相關的技術研究。
             </p>
           </motion.div>
         </div>

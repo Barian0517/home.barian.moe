@@ -18,8 +18,8 @@ interface ProfileCardProps {
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ onNavigate }) => {
   // 定義連結，區分內部視圖與外部 URL
-  const mainLinks = [
-    { name: '自我介紹', isInternal: true, view: 'about', icon: <Globe size={16} /> },
+  const mainLinks: { name: string; isInternal: boolean; url?: string; view?: string; icon: JSX.Element }[] = [
+    { name: '自我介紹', isInternal: false, url: 'https://barian.moe', icon: <Globe size={16} /> },
     { name: '我的YT', isInternal: false, url: 'https://www.youtube.com/@barian0517', icon: <Youtube size={16} /> },
     { name: 'MC伺服器官網', isInternal: false, url: 'https://mcweb.barian.moe', icon: <Server size={16} /> },
   ];
