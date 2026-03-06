@@ -150,9 +150,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ onNavigate }) => {
                         transition={{ delay: 0.3 }}
                         className="border-l-2 border-[#ff00ff] pl-4"
                     >
-                        最近大部分時間都在 Minecraft，
-                        <br />
-                        有架設 Minecraft 1.20.1 Forge 伺服器。
+                        最近在研究ai相關的內容，寫一些小程序
                     </motion.p>
                 </div>
 
