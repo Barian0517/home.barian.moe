@@ -36,6 +36,15 @@ const webToolItems: WorkshopItem[] = [
     linkUrl: "https://ftbquestedit.barian.moe",
     tags: ["Modding", "Editor", "Efficiency"],
     date: "2026"
+  },
+  {
+    id: 104,
+    title: "離線壓縮工具",
+    description: "一個免費的離線壓縮工具 無後端運行 免登入 本地上傳 保障資料安全",
+    imageUrl: "", 
+    linkUrl: "https://compress.barian.moe/",
+    tags: ["Tool", "Compression", "Offline"],
+    date: "2026"
   }
 ];
 
@@ -67,6 +76,15 @@ const staticWebItems: WorkshopItem[] = [
     linkUrl: "https://mcweb.barian.moe",
     tags: ["Web Design", "Minecraft", "Docs"],
     date: "2025"
+  },
+  {
+    id: 4,
+    title: "伊莉絲 介紹網頁",
+    description: "幽影櫻的原創OC 伊莉絲 的介紹網頁",
+    imageUrl: "", 
+    linkUrl: "https://iris.barian.moe",
+    tags: ["OC", "Character", "Portfolio"],
+    date: "2026"
   }
 ];
 
