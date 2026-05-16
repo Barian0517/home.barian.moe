@@ -98,6 +98,15 @@ const appItems: WorkshopItem[] = [
     linkUrl: "https://github.com/Barian0517/modsync-v2",
     tags: ["Python", "Automation", "CLI Tool"],
     date: "2025"
+  },
+  {
+    id: 202,
+    title: "SonicPulse 音訊視覺化 APP",
+    description: "氛圍感即時音訊視覺化產生器的應用程式版本。",
+    imageUrl: "", 
+    linkUrl: "https://github.com/Barian0517/sonicpulse-app",
+    tags: ["App", "Audio", "Visualization"],
+    date: "2026"
   }
 ];
 
