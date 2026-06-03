@@ -85,6 +85,15 @@ const staticWebItems: WorkshopItem[] = [
     linkUrl: "https://iris.barian.moe",
     tags: ["OC", "Character", "Portfolio"],
     date: "2026"
+  },
+  {
+    id: 5,
+    title: "靜態網頁訂製服務",
+    description: "你也想要一個這樣的網站嗎?前往以查看詳情，有需要的話聯繫我訂製吧!",
+    imageUrl: "", 
+    linkUrl: "https://custom.barian.moe/",
+    tags: ["Service", "Web Design", "Portfolio"],
+    date: "2026"
   }
 ];
 
