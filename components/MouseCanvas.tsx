@@ -1,11 +1,16 @@
 import React, { useEffect, useRef } from 'react';
-import { Particle, TrailPoint } from '../types';
 
 const MouseCanvas: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const trails = useRef<TrailPoint[]>([]);
-  const particles = useRef<Particle[]>([]);
-  const mousePos = useRef({ x: 0, y: 0 });
+  
+  // Track precise mouse position
+  const mousePos = useRef({ x: -100, y: -100 });
+  // Track smoothed position for the outer ring
+  const smoothedPos = useRef({ x: -100, y: -100 });
+  const isClicking = useRef(false);
+  
+  // Track radius for smooth animation on click
+  const radiusObj = useRef({ current: 16 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -22,74 +27,57 @@ const MouseCanvas: React.FC = () => {
     window.addEventListener('resize', resize);
     resize();
 
+    // Set initial position immediately on first mouse move to avoid flying in from corner
+    let firstMove = true;
+
     const handleMouseMove = (e: MouseEvent) => {
       mousePos.current = { x: e.clientX, y: e.clientY };
-      trails.current.push({ x: e.clientX, y: e.clientY, age: 0 });
-    };
-
-    const handleClick = (e: MouseEvent) => {
-      for (let i = 0; i < 12; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 3 + 2;
-        particles.current.push({
-          x: e.clientX,
-          y: e.clientY,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          life: 1.0,
-          color: Math.random() > 0.5 ? '#00bfff' : '#ff00ff'
-        });
+      if (firstMove) {
+        smoothedPos.current = { x: e.clientX, y: e.clientY };
+        firstMove = false;
       }
     };
 
+    const handleMouseDown = () => { isClicking.current = true; };
+    const handleMouseUp = () => { isClicking.current = false; };
+
     window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mousedown', handleClick);
+    window.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mouseup', handleMouseUp);
 
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.globalCompositeOperation = 'lighter';
 
-      // Update and draw trails
-      for (let i = trails.current.length - 1; i >= 0; i--) {
-        const point = trails.current[i];
-        point.age += 0.05; // Fade speed
-        if (point.age >= 1) {
-          trails.current.splice(i, 1);
-          continue;
-        }
-
-        const size = (1 - point.age) * 15;
-        ctx.beginPath();
-        ctx.arc(point.x, point.y, size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 191, 255, ${0.5 * (1 - point.age)})`;
-        ctx.fill();
-        
-        // Inner core
-        ctx.beginPath();
-        ctx.arc(point.x, point.y, size * 0.5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 0, 255, ${0.8 * (1 - point.age)})`;
-        ctx.fill();
+      if (!firstMove) {
+        // Lerp position for outer circle (smooth following)
+        smoothedPos.current.x += (mousePos.current.x - smoothedPos.current.x) * 0.3;
+        smoothedPos.current.y += (mousePos.current.y - smoothedPos.current.y) * 0.3;
       }
 
-      // Update and draw particles
-      for (let i = particles.current.length - 1; i >= 0; i--) {
-        const p = particles.current[i];
-        p.x += p.vx;
-        p.y += p.vy;
-        p.life -= 0.02;
+      // Lerp radius
+      const targetRadius = isClicking.current ? 12 : 16;
+      radiusObj.current.current += (targetRadius - radiusObj.current.current) * 0.3;
 
-        if (p.life <= 0) {
-          particles.current.splice(i, 1);
-          continue;
-        }
+      const { x, y } = mousePos.current;
+      const sx = smoothedPos.current.x;
+      const sy = smoothedPos.current.y;
+      const r = radiusObj.current.current;
 
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 4 * p.life, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = p.life;
-        ctx.fill();
-        ctx.globalAlpha = 1.0;
-      }
+      const primaryColor = 'rgba(216, 180, 254, 0.9)'; // Light purple inner dot
+      const ringColor = 'rgba(216, 180, 254, 0.5)';    // Light purple outer ring
+
+      // Outer Circle (Smoothed position)
+      ctx.beginPath();
+      ctx.arc(sx, sy, r, 0, Math.PI * 2);
+      ctx.strokeStyle = ringColor;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Inner Dot (Exact position)
+      ctx.beginPath();
+      ctx.arc(x, y, 4, 0, Math.PI * 2);
+      ctx.fillStyle = primaryColor;
+      ctx.fill();
 
       animationFrameId = requestAnimationFrame(render);
     };
@@ -99,7 +87,8 @@ const MouseCanvas: React.FC = () => {
     return () => {
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mousedown', handleClick);
+      window.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mouseup', handleMouseUp);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
@@ -107,7 +96,7 @@ const MouseCanvas: React.FC = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed top-0 left-0 w-full h-full pointer-events-none z-50 mix-blend-screen"
+      className="fixed top-0 left-0 w-full h-full pointer-events-none z-[9999]"
     />
   );
 };
