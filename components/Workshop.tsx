@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Monitor, Tag, Cpu, Layout, Wrench, AppWindow, Terminal } from 'lucide-react';
+import { ExternalLink, Monitor, Tag, Cpu, Layout, Wrench, AppWindow, Terminal, ServerCog } from 'lucide-react';
 import { WorkshopItem } from '../types';
 import GlitchText from './GlitchText';
 
@@ -15,6 +15,7 @@ const webToolItems: WorkshopItem[] = [
     title: "MC NBT 玩家資料編輯器",
     description: "方便快速的線上 NBT 資料編輯工具，支援上傳與修改 Minecraft 玩家存檔數據，簡化管理流程，當服主只有手機時也能透過網展處理玩家數據相關問題。",
     imageUrl: "", 
+    images: ["https://cloudreve.barian.moe/f/BDDSl/nbteditor.png", "https://cloudreve.barian.moe/f/mZ4FB/nbteditor2.png"],
     linkUrl: "https://nbtedit.barian.moe",
     tags: ["Tool", "NBT Parser", "Utility"],
     date: "2026"
@@ -24,6 +25,7 @@ const webToolItems: WorkshopItem[] = [
     title: "SonicPulse 音訊視覺化",
     description: "氛圍感即時音訊視覺化產生器，利用 Web Audio API 將聲音轉化為動態粒子與波動效果，並提供了背景與動畫的自訂。",
     imageUrl: "", 
+    images: ["https://cloudreve.barian.moe/f/x1mFb/sonicpulse.png", "https://cloudreve.barian.moe/f/v5dsl/sonicpulse2.png", "https://cloudreve.barian.moe/f/epdte/sonicpulse3.png"],
     linkUrl: "https://sonicpulse.barian.moe",
     tags: ["Web Audio API", "Canvas", "Visualization"],
     date: "2025"
@@ -33,6 +35,7 @@ const webToolItems: WorkshopItem[] = [
     title: "FTB Quest 編輯器",
     description: "針對 FTB Quests 模組設計的線上編輯器，提供圖形化介面以協助模組包作者快速製作任務樹。(開發中)",
     imageUrl: "", 
+    images: ["https://cloudreve.barian.moe/f/0mWu2/ftbquest.png", "https://cloudreve.barian.moe/f/arosl/ftbquest2.png"],
     linkUrl: "https://ftbquestedit.barian.moe",
     tags: ["Modding", "Editor", "Efficiency"],
     date: "2026"
@@ -42,6 +45,7 @@ const webToolItems: WorkshopItem[] = [
     title: "離線壓縮工具",
     description: "一個免費的離線壓縮工具 無後端運行 免登入 本地上傳 保障資料安全",
     imageUrl: "", 
+    images: ["https://cloudreve.barian.moe/f/6rDTB/compress.png", "https://cloudreve.barian.moe/f/lEOFR/compress2.png"],
     linkUrl: "https://compress.barian.moe/",
     tags: ["Tool", "Compression", "Offline"],
     date: "2026"
@@ -55,6 +59,7 @@ const staticWebItems: WorkshopItem[] = [
     title: "個人形象網站 - 幽影櫻",
     description: "基於 React + Vite + Tailwind CSS 打造的賽博風格網站，包含粒子特效與互動動畫，用來通往我的其他網站。",
     imageUrl: "", 
+    images: ["https://cloudreve.barian.moe/f/epbSe/home.png", "https://cloudreve.barian.moe/f/arJtl/home2.png"],
     linkUrl: "https://home.barian.moe",
     tags: ["React", "UI/UX", "Animation"],
     date: "2025"
@@ -64,6 +69,7 @@ const staticWebItems: WorkshopItem[] = [
     title: "自我介紹主頁",
     description: "個人介紹頁面，作為網路身份的名片，讓人容易了解我",
     imageUrl: "", 
+    images: ["https://cloudreve.barian.moe/f/0mLC2/barian.png"],
     linkUrl: "https://barian.moe",
     tags: ["HTML", "CSS", "Portfolio"],
     date: "2025"
@@ -73,6 +79,7 @@ const staticWebItems: WorkshopItem[] = [
     title: "Minecraft 伺服器官網",
     description: "專為私人 Minecraft 伺服器設計的官方網站，提供伺服器資訊介紹與社群連結。",
     imageUrl: "", 
+    images: ["https://cloudreve.barian.moe/f/6rAuB/mcweb.png", "https://cloudreve.barian.moe/f/lEpTR/mcweb2.png", "https://cloudreve.barian.moe/f/JpXTn/mcweb3.png", "https://cloudreve.barian.moe/f/ZDnUQ/mcweb4.png"],
     linkUrl: "https://mcweb.barian.moe",
     tags: ["Web Design", "Minecraft", "Docs"],
     date: "2025"
@@ -82,6 +89,7 @@ const staticWebItems: WorkshopItem[] = [
     title: "伊莉絲 介紹網頁",
     description: "幽影櫻的原創OC 伊莉絲 的介紹網頁",
     imageUrl: "", 
+    images: ["https://cloudreve.barian.moe/f/x1Pib/iris.png"],
     linkUrl: "https://iris.barian.moe",
     tags: ["OC", "Character", "Portfolio"],
     date: "2026"
@@ -91,8 +99,19 @@ const staticWebItems: WorkshopItem[] = [
     title: "靜態網頁訂製服務",
     description: "你也想要一個這樣的網站嗎?前往以查看詳情，有需要的話聯繫我訂製吧!",
     imageUrl: "", 
+    images: ["https://cloudreve.barian.moe/f/25QhQ/custom.png", "https://cloudreve.barian.moe/f/v5atl/custom2.png"],
     linkUrl: "https://custom.barian.moe/",
     tags: ["Service", "Web Design", "Portfolio"],
+    date: "2026"
+  },
+  {
+    id: 6,
+    title: "遊戲王伺服器官網",
+    description: "遊戲王 YGOPro 伺服器的官方網站，提供下載、教學與相關資訊。",
+    imageUrl: "", 
+    images: ["https://cloudreve.barian.moe/f/jaNfb/ygoproweb.png", "https://cloudreve.barian.moe/f/JpeFn/ygoproweb2.png", "https://cloudreve.barian.moe/f/BDlil/ygoproweb3.png", "https://cloudreve.barian.moe/f/mZ2TB/ygoproweb4.png"],
+    linkUrl: "https://ygoproweb.barian.moe/",
+    tags: ["Web Design", "YGOPro", "Docs"],
     date: "2026"
   }
 ];
@@ -119,7 +138,21 @@ const appItems: WorkshopItem[] = [
   }
 ];
 
-type CategoryType = 'web-tools' | 'static-web' | 'apps';
+// 4. 前後端網頁 (Full Stack) - 新增分類
+const fullstackItems: WorkshopItem[] = [
+  {
+    id: 301,
+    title: "YGO 卡片製作器",
+    description: "一個可以自定義製作與生成遊戲王卡片的網頁工具，支援高解析度匯出與多種卡片模版。",
+    imageUrl: "", 
+    images: ["https://cloudreve.barian.moe/f/P8vcE/cardedit.png", "https://cloudreve.barian.moe/f/L60iz/cardedit2.png", "https://cloudreve.barian.moe/f/npJFL/cardedit3.png"],
+    linkUrl: "https://ygocardmaker.barian.moe/",
+    tags: ["Full Stack", "YGO", "Tool"],
+    date: "2026"
+  }
+];
+
+type CategoryType = 'web-tools' | 'static-web' | 'apps' | 'full-stack';
 
 const Workshop: React.FC = () => {
   const [activeTab, setActiveTab] = useState<CategoryType>('web-tools');
@@ -130,6 +163,7 @@ const Workshop: React.FC = () => {
       case 'web-tools': return webToolItems;
       case 'static-web': return staticWebItems;
       case 'apps': return appItems;
+      case 'full-stack': return fullstackItems;
       default: return [];
     }
   };
@@ -140,6 +174,7 @@ const Workshop: React.FC = () => {
       case 'web-tools': return '#ffbd00'; // Yellow
       case 'static-web': return '#00bfff'; // Blue
       case 'apps': return '#ff00ff'; // Purple/Pink
+      case 'full-stack': return '#10b981'; // Emerald
     }
   };
 
@@ -185,6 +220,14 @@ const Workshop: React.FC = () => {
               onClick={() => setActiveTab('static-web')}
               icon={<Layout size={16} />}
               color="#00bfff"
+            />
+            <TabButton 
+              label="前後端網頁" 
+              subLabel="FULL STACK"
+              isActive={activeTab === 'full-stack'} 
+              onClick={() => setActiveTab('full-stack')}
+              icon={<ServerCog size={16} />}
+              color="#10b981"
             />
             <TabButton 
               label="程式應用" 
@@ -279,6 +322,74 @@ const TabButton: React.FC<TabButtonProps> = ({ label, subLabel, isActive, onClic
   </button>
 );
 
+const SlantedImageGallery = ({ images }: { images: string[] }) => {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  return (
+    <div 
+      className="flex w-full h-full overflow-hidden bg-[#0f1623]"
+      onMouseLeave={() => setHoveredIndex(null)}
+    >
+      {images.map((img, i) => {
+        let clipPath = "";
+        let marginLeft = "";
+        const isFirst = i === 0;
+        const isLast = i === images.length - 1;
+        const isOnly = images.length === 1;
+
+        if (isOnly) {
+           clipPath = "none";
+           marginLeft = "0";
+        } else if (isFirst) {
+           clipPath = "polygon(0 0, 100% 0, calc(100% - 20px) 100%, 0% 100%)";
+           marginLeft = "0";
+        } else if (isLast) {
+           clipPath = "polygon(20px 0, 100% 0, 100% 100%, 0% 100%)";
+           marginLeft = "-10px";
+        } else {
+           clipPath = "polygon(20px 0, 100% 0, calc(100% - 20px) 100%, 0% 100%)";
+           marginLeft = "-10px";
+        }
+
+        const isHovered = hoveredIndex === i;
+        const anyHovered = hoveredIndex !== null;
+        
+        let flexValue = 1;
+        if (isHovered) {
+          flexValue = 3;
+        } else if (!anyHovered && isFirst) {
+          flexValue = 3;
+        }
+
+        return (
+          <div
+            key={i}
+            onMouseEnter={() => setHoveredIndex(i)}
+            className="relative h-full transition-all duration-500 ease-in-out cursor-pointer group/item"
+            style={{
+              clipPath,
+              marginLeft,
+              flex: flexValue
+            }}
+          >
+            <div 
+              className={`absolute inset-0 transition-colors duration-500 z-10 pointer-events-none ${
+                isHovered ? 'bg-transparent' : anyHovered ? 'bg-black/60' : 'bg-black/20'
+              }`} 
+            />
+            <img 
+              src={img} 
+              alt={`preview-${i}`} 
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-110"
+              style={{ objectPosition: 'center' }}
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 const WorkshopCard: React.FC<{ 
   item: WorkshopItem; 
   index: number; 
@@ -293,6 +404,7 @@ const WorkshopCard: React.FC<{
       case 'web-tools': return <Cpu size={48} color={themeColor} className="opacity-30 mb-2 group-hover:opacity-100 transition-opacity duration-500" />;
       case 'static-web': return <Monitor size={48} color={themeColor} className="opacity-30 mb-2 group-hover:opacity-100 transition-opacity duration-500" />;
       case 'apps': return <AppWindow size={48} color={themeColor} className="opacity-30 mb-2 group-hover:opacity-100 transition-opacity duration-500" />;
+      case 'full-stack': return <ServerCog size={48} color={themeColor} className="opacity-30 mb-2 group-hover:opacity-100 transition-opacity duration-500" />;
     }
   };
 
@@ -301,6 +413,7 @@ const WorkshopCard: React.FC<{
       case 'web-tools': return 'WEB TOOL';
       case 'static-web': return 'STATIC SITE';
       case 'apps': return 'APPLICATION';
+      case 'full-stack': return 'FULL STACK';
     }
   };
 
@@ -322,7 +435,9 @@ const WorkshopCard: React.FC<{
 
       {/* Image / Preview Area */}
       <div className="h-48 w-full overflow-hidden bg-[#0f1623] relative group-hover:shadow-inner transition-all">
-        {item.imageUrl ? (
+        {item.images && item.images.length > 0 ? (
+          <SlantedImageGallery images={item.images} />
+        ) : item.imageUrl ? (
           <img 
             src={item.imageUrl} 
             alt={item.title} 
@@ -410,7 +525,7 @@ const WorkshopCard: React.FC<{
               }}
             >
               <ExternalLink size={18} />
-              {category === 'apps' ? '查看專案' : (category === 'static-web' ? '訪問網站' : '啟動工具')}
+              {category === 'apps' ? '查看專案' : (category === 'static-web' || category === 'full-stack' ? '訪問網站' : '啟動工具')}
             </a>
         </div>
       </div>

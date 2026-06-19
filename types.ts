@@ -49,6 +49,7 @@ export interface WorkshopItem {
   title: string;
   description: string;
   imageUrl?: string;
+  images?: string[];
   linkUrl: string;
   tags: string[];
   date?: string;
