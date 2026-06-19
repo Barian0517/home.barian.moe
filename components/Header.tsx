@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Music, ChevronDown } from 'lucide-react';
+import { Music, ChevronDown, Zap, ZapOff } from 'lucide-react';
 
 // 定義導航項目，使用 view id 而非 url
 const links = [
@@ -15,9 +15,11 @@ interface HeaderProps {
   currentView: string;
   onNavigate: (view: string) => void;
   onMusicClick: () => void;
+  isLowPerformance?: boolean;
+  onTogglePerformance?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ currentView, onNavigate, onMusicClick }) => {
+const Header: React.FC<HeaderProps> = ({ currentView, onNavigate, onMusicClick, isLowPerformance = false, onTogglePerformance }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const currentLink = links.find(l => l.view === currentView) || links[0];
 
@@ -62,18 +64,33 @@ const Header: React.FC<HeaderProps> = ({ currentView, onNavigate, onMusicClick }
             })}
           </nav>
 
-          {/* Music Toggle Button */}
-          <button 
-            onClick={onMusicClick}
-            className="w-10 h-10 flex items-center justify-center rounded-full border border-[#00bfff]/30 text-[#00bfff] hover:bg-[#00bfff]/10 hover:shadow-[0_0_10px_#00bfff] transition-all duration-300 flex-shrink-0 bg-transparent cursor-pointer"
-            title="Music Player"
-          >
-            <Music size={20} />
-          </button>
+          <div className="flex items-center gap-2">
+            {/* Performance Mode Toggle Button */}
+            <button 
+              onClick={onTogglePerformance}
+              className={`w-10 h-10 flex items-center justify-center rounded-full border transition-all duration-300 flex-shrink-0 bg-transparent cursor-pointer ${
+                isLowPerformance 
+                  ? 'border-yellow-500/50 text-yellow-500 hover:bg-yellow-500/10 hover:shadow-[0_0_10px_rgba(234,179,8,0.5)]' 
+                  : 'border-[#00bfff]/30 text-[#00bfff] hover:bg-[#00bfff]/10 hover:shadow-[0_0_10px_#00bfff]'
+              }`}
+              title={isLowPerformance ? "Low Performance Mode On" : "Low Performance Mode Off"}
+            >
+              {isLowPerformance ? <ZapOff size={20} /> : <Zap size={20} />}
+            </button>
+
+            {/* Music Toggle Button */}
+            <button 
+              onClick={onMusicClick}
+              className="w-10 h-10 flex items-center justify-center rounded-full border border-[#00bfff]/30 text-[#00bfff] hover:bg-[#00bfff]/10 hover:shadow-[0_0_10px_#00bfff] transition-all duration-300 flex-shrink-0 bg-transparent cursor-pointer"
+              title="Music Player"
+            >
+              <Music size={20} />
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation Controls */}
-        <div className="flex md:hidden items-center gap-4">
+        <div className="flex md:hidden items-center gap-3">
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="flex items-center gap-2 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full text-white font-['Rajdhani'] font-bold transition-colors hover:bg-white/10"
@@ -84,6 +101,18 @@ const Header: React.FC<HeaderProps> = ({ currentView, onNavigate, onMusicClick }
             <ChevronDown size={16} className={`transition-transform duration-300 ${isMobileMenuOpen ? "rotate-180 text-[#ff00ff]" : "text-[#00bfff]"}`} />
           </button>
           
+          <button 
+            onClick={onTogglePerformance}
+            className={`w-9 h-9 flex items-center justify-center rounded-full border transition-colors bg-transparent ${
+              isLowPerformance 
+                ? 'border-yellow-500/50 text-yellow-500 hover:bg-yellow-500/10' 
+                : 'border-[#00bfff]/30 text-[#00bfff] hover:bg-white/5'
+            }`}
+            title="Toggle Performance Mode"
+          >
+            {isLowPerformance ? <ZapOff size={18} /> : <Zap size={18} />}
+          </button>
+
           <button 
             onClick={onMusicClick}
             className="w-9 h-9 flex items-center justify-center rounded-full border border-[#00bfff]/30 text-[#00bfff] bg-transparent hover:bg-white/5"

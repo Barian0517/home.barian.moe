@@ -18,7 +18,7 @@
         background-color: #0b0f17;
         font-family: 'Zen Maru Gothic', sans-serif;
       }
-      * {
+      body.hide-cursor, body.hide-cursor * {
         cursor: none !important;
       }
       /* Custom Scrollbar */
@@ -74,6 +74,10 @@
         pointer-events: none;
         /* Apply movement and flicker */
         animation: scanline-move 15s linear infinite, flicker 3s infinite;
+      }
+      
+      body.low-performance .scanlines::before {
+        animation: none; /* Disable scanline and flicker animation in low-performance mode */
       }
 
       /* Markdown Styles */
