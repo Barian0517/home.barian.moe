@@ -7,6 +7,7 @@ import ProfileCard from './components/ProfileCard';
 import About from './components/About';
 import Projects from './components/Projects';
 import Workshop from './components/Workshop';
+import Experience from './components/Experience';
 import MiniGame from './components/MiniGame';
 import MusicPlayer from './components/MusicPlayer';
 
@@ -48,8 +49,11 @@ const App: React.FC = () => {
           {currentView === 'about' && (
              <About key="about" />
           )}
-           {currentView === 'projects' && (
+          {currentView === 'projects' && (
              <Projects key="projects" />
+          )}
+          {currentView === 'experience' && (
+             <Experience key="experience" />
           )}
           {currentView === 'workshop' && (
              <Workshop key="workshop" />
