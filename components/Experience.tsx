@@ -81,7 +81,12 @@ const categories: Category[] = [
           "**音頻可視化**：可導入音樂檔播放、擷取視窗生成或麥克風輸入生成。",
           "**NBT 編輯器**：可導入玩家 .dat 檔案修改，支持上下一步、多選、各種編輯器功能，可多檔同時修改。",
           "**Minecraft 官網**：多頁面切換、音樂播放器、API 動態擷取服務器檔案列表(模組清單)。",
-          "**Ftbquest編輯器**：為 FTB Quests 模組設計的編輯器，可顯示任務圖、任務名稱。"
+          "**Ftbquest編輯器**：為 FTB Quests 模組設計的編輯器，可顯示任務圖、任務名稱。",
+          "**離線壓縮工具**：特色為 完全離線運作保障隱私、無需上傳檔案至伺服器、透過客戶端直接進行壓縮處理、支援快速的免費壓縮服務。",
+          "**伊莉絲 介紹網頁**：專屬原創角色 (OC) 介紹、專為角色量身打造的精美視覺設計、自訂字體排版、動態展示效果與設定說明。",
+          "**靜態網頁訂製服務**：溫馨可愛的筆記本風格 UI（包含櫻花粉色調、紙張陰影與網格背景）、專屬的委託說明與方案展示、平滑滾動的響應式網頁設計。",
+          "**遊戲王伺服器官網**： YGOPRO 私人伺服器入口、提供客戶端下載與伺服器資訊、玩家社群交流與相關遊戲規則說明。",
+          "**YGO 卡片製作器**：自製卡片視覺化管理器、支援中日韓多語系字體渲染（Noto Sans）、自訂卡片數值與屬性編輯、提供玩家方便的製卡與預覽功能。"
         ],
         links: [
           { label: "個人主頁", url: "https://home.barian.moe" },
@@ -89,7 +94,12 @@ const categories: Category[] = [
           { label: "音頻可視化", url: "https://sonicpulse.barian.moe" },
           { label: "NBT 編輯器", url: "https://nbtedit.barian.moe" },
           { label: "Minecraft 官網", url: "https://mcweb.barian.moe" },
-          { label: "Ftbquest編輯器", url: "https://ftbquestedit.barian.moe" }
+          { label: "Ftbquest編輯器", url: "https://ftbquestedit.barian.moe" },
+          { label: "離線壓縮工具", url: "https://compress.barian.moe/" },
+          { label: "伊莉絲 介紹網頁", url: "https://iris.barian.moe" },
+          { label: "靜態網頁訂製服務", url: "https://custom.barian.moe/" },
+          { label: "遊戲王伺服器官網", url: "https://ygoproweb.barian.moe/" },
+          { label: "YGO 卡片製作器", url: "https://ygocardmaker.barian.moe/" }
         ]
       },
       {

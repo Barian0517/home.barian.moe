@@ -7,8 +7,7 @@ const links = [
   { name: '首頁', view: 'home' },
   { name: '關於', view: 'about' },
   { name: '經歷', view: 'experience' },
-  { name: '作品集', view: 'workshop' },
-  { name: 'GitHub倉庫', view: 'projects' }
+  { name: '作品集', view: 'workshop' }
 ];
 
 interface HeaderProps {

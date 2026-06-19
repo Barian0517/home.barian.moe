@@ -6,7 +6,6 @@ import MouseCanvas from './components/MouseCanvas';
 import Header from './components/Header';
 import ProfileCard from './components/ProfileCard';
 import About from './components/About';
-import Projects from './components/Projects';
 import Workshop from './components/Workshop';
 import Experience from './components/Experience';
 import MusicPlayer from './components/MusicPlayer';
@@ -145,9 +144,6 @@ const App: React.FC = () => {
             )}
             {currentView === 'about' && (
                <About key="about" />
-            )}
-            {currentView === 'projects' && (
-               <Projects key="projects" />
             )}
             {currentView === 'experience' && (
                <Experience key="experience" />
