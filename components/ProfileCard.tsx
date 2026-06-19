@@ -85,7 +85,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ onNavigate }) => {
   return (
     <div id="profile-card-page" className="min-h-screen flex items-center justify-center p-4 pt-24 relative z-10 perspective-1000">
       {/* perspective 設置於外層容器 */}
-      <div style={{ perspective: '1200px' }} className="w-full max-w-4xl flex justify-center">
+      <div style={{ perspective: '1200px' }} className="w-full max-w-4xl flex justify-center select-none">
         
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}

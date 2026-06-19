@@ -194,7 +194,7 @@ const Workshop: React.FC = () => {
         {/* Header */}
         <div className="mb-8 flex flex-col md:flex-row items-start md:items-center justify-between border-b border-white/10 pb-4 gap-4">
            <h2 className="text-3xl md:text-4xl font-bold text-white font-['Orbitron'] tracking-wider">
-            <GlitchText text="我的工坊" />
+            <GlitchText text="作品集" />
             <span 
               className="text-lg ml-4 font-['Rajdhani'] opacity-70 transition-colors duration-500"
               style={{ color: themeColor }}
