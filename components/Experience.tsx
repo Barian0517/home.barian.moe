@@ -321,19 +321,16 @@ const Experience: React.FC = () => {
                   <button
                     key={cat.id}
                     onClick={() => handleCategoryClick(cat.id)}
-                    className={`flex flex-col items-center gap-1 pb-1 transition-all cursor-pointer whitespace-nowrap relative ${
+                    className={`flex flex-col items-center gap-1 pb-1 transition-all cursor-pointer whitespace-nowrap relative group ${
                       isActive 
                         ? 'text-white' 
                         : 'text-gray-500 hover:text-gray-300'
                     }`}
                   >
                     <span className="text-xs font-medium tracking-widest font-['Zen_Maru_Gothic']">{cat.name}</span>
-                    {isActive && (
-                      <motion.div 
-                        layoutId="nav-indicator"
-                        className="absolute bottom-[-13px] left-0 right-0 h-[1px] bg-white"
-                      />
-                    )}
+                    <span 
+                      className={`absolute bottom-[-13px] left-0 h-[1px] bg-white transition-all duration-300 ${isActive ? 'w-full' : 'w-0'}`}
+                    />
                   </button>
                 );
               })}
