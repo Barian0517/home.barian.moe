@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import GlitchText from './GlitchText';
 import ReactMarkdown from 'react-markdown';
-import { Terminal, Code, Box, Star, UserCheck, HeartHandshake, ChevronRight, FileText, X } from 'lucide-react';
+import { Terminal, Code, Box, Star, UserCheck, HeartHandshake, FileText, X } from 'lucide-react';
 
 interface ExperienceItem {
   id: string;
@@ -269,120 +268,134 @@ const Experience: React.FC = () => {
   const currentCategoryData = categories.find(c => c.id === activeCategory);
 
   return (
-    <div id="experience-page" className="min-h-screen pt-24 pb-12 px-4 md:px-8 max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row gap-8 perspective-1000">
-      
-      {/* Sidebar Navigation */}
-      <motion.div 
-        initial={{ opacity: 0, x: -30 }}
-        animate={{ opacity: 1, x: 0 }}
-        className="w-full md:w-64 flex-shrink-0 flex flex-col gap-2 relative"
-      >
-        <div className="sticky top-24">
-          <h2 className="text-2xl font-bold text-white mb-6 font-['Orbitron'] tracking-wider border-b border-white/10 pb-4">
-            <GlitchText text="經歷" />
-            <span className="block text-[#00bfff] text-sm mt-1 font-['Rajdhani'] opacity-70">/ EXPERIENCES</span>
-          </h2>
-          <nav className="flex flex-row md:flex-col gap-2 overflow-x-auto md:overflow-visible pb-4 md:pb-0 hide-scrollbar">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0, transition: { duration: 0.15 } }}
+      id="experience-page" 
+      className="min-h-[calc(100vh-80px)] pt-24 pb-12 px-4 md:px-8 max-w-5xl mx-auto relative z-10 flex flex-col gap-6"
+    >
+        
+        {/* Sticky Header with Title and Menu */}
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="sticky top-[140px] md:top-[70px] z-40 flex flex-col md:flex-row md:justify-between items-start md:items-end border-b border-white/10 pb-3 bg-[#050505]/95 backdrop-blur-md pt-4"
+        >
+          {/* Category Title */}
+          <div className="mb-4 md:mb-0 flex-shrink-0 pr-4">
+            <h2 className="text-4xl font-bold text-white mb-1 font-['Zen_Maru_Gothic'] tracking-wide">
+              {currentCategoryData?.name}
+            </h2>
+            <p className="text-gray-400 font-['Orbitron'] tracking-widest text-xs uppercase">
+               {currentCategoryData?.id.replace('-', ' ')}
+            </p>
+          </div>
+
+          <nav className="flex gap-4 md:gap-6 overflow-x-auto hide-scrollbar w-full md:w-auto pb-1 md:pb-0">
             {categories.map((cat) => {
               const isActive = activeCategory === cat.id;
               return (
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg border-l-2 transition-all cursor-pointer whitespace-nowrap min-w-max md:min-w-0 ${
+                  className={`flex flex-col items-center gap-1 pb-1 transition-all cursor-pointer whitespace-nowrap relative ${
                     isActive 
-                      ? 'bg-[#00bfff]/10 border-[#00bfff] text-[#00bfff] shadow-[inset_0_0_20px_rgba(0,191,255,0.05)]' 
-                      : 'bg-[#1a2233]/40 border-transparent text-gray-400 hover:bg-[#1a2233]/80 hover:text-gray-200'
+                      ? 'text-white' 
+                      : 'text-gray-500 hover:text-gray-300'
                   }`}
                 >
-                  {cat.icon}
-                  <span className="font-bold font-['Rajdhani'] tracking-wide">{cat.name}</span>
+                  <span className="text-xs font-medium tracking-widest font-['Zen_Maru_Gothic']">{cat.name}</span>
+                  {isActive && (
+                    <motion.div 
+                      layoutId="nav-indicator"
+                      className="absolute bottom-0 left-0 right-0 h-[1px] bg-white"
+                    />
+                  )}
                 </button>
               );
             })}
           </nav>
-        </div>
-      </motion.div>
+        </motion.div>
 
-      {/* Content Area */}
-      <motion.div 
-        key={activeCategory}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="flex-1 flex flex-col gap-6"
-      >
-        {currentCategoryData?.items.map((item) => (
-          <div key={item.id} className="bg-[#1a2233]/60 backdrop-blur-md border border-[#00bfff]/20 rounded-xl p-6 md:p-8 shadow-lg hover:border-[#00bfff]/50 transition-colors duration-300">
-            <h3 className="text-xl md:text-2xl font-bold text-white mb-4 font-['Zen_Maru_Gothic'] flex items-center gap-2">
-              <ChevronRight className="text-[#ff00ff]" size={24} />
-              {item.title}
-            </h3>
-            
-            {item.subtitle && (
-              <p className="text-[#00bfff] text-sm md:text-base font-['Rajdhani'] mb-4 opacity-80">{item.subtitle}</p>
-            )}
-
-            <div className="space-y-3 text-gray-300 font-['Zen_Maru_Gothic'] leading-relaxed">
-              {item.description.map((text, i) => {
-                // 將 text 中的 **粗體** 字串手動轉換為簡單的 <strong>，以簡單支援重點標示
-                const parts = text.split(/(\*\*.*?\*\*)/g);
-                return (
-                  <p key={i} className="text-[15px] md:text-base">
-                    <span className="text-[#00bfff] opacity-50 mr-2">▹</span>
-                    {parts.map((p, pIdx) => {
-                      if (p.startsWith('**') && p.endsWith('**')) {
-                        return <strong key={pIdx} className="text-white font-bold">{p.slice(2, -2)}</strong>;
-                      }
-                      return p;
-                    })}
-                  </p>
-                );
-              })}
-            </div>
-
-            {/* Links and Markdown Button */}
-            {(item.links || item.markdownUrl) && (
-              <div className="mt-6 pt-6 border-t border-white/10 flex flex-wrap gap-4 items-center">
-                {item.links?.map((link, idx) => (
-                  <a 
-                    key={idx}
-                    href={link.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 border border-white/10 rounded border-b-2 hover:bg-white/5 hover:border-[#00bfff]/50 text-sm font-['Rajdhani'] transition-colors decoration-none text-white hover:text-[#00bfff]"
-                  >
-                    <Box size={16} />
-                    {link.label}
-                  </a>
-                ))}
+        {/* Content Area */}
+        <motion.div 
+          key={activeCategory}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex-1 flex flex-col gap-8"
+        >
+          <div className="grid grid-cols-1 gap-6">
+            {currentCategoryData?.items.map((item) => (
+              <div key={item.id} className="bg-white/[0.02] border border-white/5 rounded-xl p-6 md:p-8 hover:bg-white/[0.04] transition-colors duration-500">
+                <h3 className="text-xl md:text-2xl font-bold text-gray-100 mb-4 font-['Zen_Maru_Gothic'] flex items-center gap-3">
+                   {item.title}
+                </h3>
                 
-                {item.markdownUrl && (
-                  <button
-                    onClick={() => setReadingMarkdownUrl(item.markdownUrl!)}
-                    className="flex items-center gap-2 px-4 py-2 bg-[#00bfff]/10 border border-[#00bfff]/50 rounded cursor-pointer text-[#00bfff] text-sm font-['Rajdhani'] font-bold hover:bg-[#00bfff]/30 transition-colors border-b-2"
-                  >
-                    <FileText size={16} />
-                    閱讀文章
-                  </button>
+                {item.subtitle && (
+                  <p className="text-gray-400 text-sm font-['Rajdhani'] mb-4">{item.subtitle}</p>
+                )}
+
+                <div className="space-y-4 text-gray-400 font-['Zen_Maru_Gothic'] leading-relaxed">
+                  {item.description.map((text, i) => {
+                    const parts = text.split(/(\*\*.*?\*\*)/g);
+                    return (
+                      <p key={i} className="text-[15px] md:text-base">
+                        {parts.map((p, pIdx) => {
+                          if (p.startsWith('**') && p.endsWith('**')) {
+                            return <strong key={pIdx} className="text-gray-200 font-medium">{p.slice(2, -2)}</strong>;
+                          }
+                          return p;
+                        })}
+                      </p>
+                    );
+                  })}
+                </div>
+
+                {/* Links and Markdown Button */}
+                {(item.links || item.markdownUrl) && (
+                  <div className="mt-8 pt-6 border-t border-white/5 flex flex-wrap gap-4 items-center">
+                    {item.links?.map((link, idx) => (
+                      <a 
+                        key={idx}
+                        href={link.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center gap-2 px-4 py-2 border border-white/10 rounded-full hover:bg-white/10 text-sm font-['Zen_Maru_Gothic'] transition-colors text-gray-300 hover:text-white"
+                      >
+                        <Box size={14} />
+                        {link.label}
+                      </a>
+                    ))}
+                    
+                    {item.markdownUrl && (
+                      <button
+                        onClick={() => setReadingMarkdownUrl(item.markdownUrl!)}
+                        className="flex items-center gap-2 px-4 py-2 border border-white/10 rounded-full cursor-pointer text-gray-300 text-sm font-['Zen_Maru_Gothic'] hover:bg-white/10 hover:text-white transition-colors"
+                      >
+                        <FileText size={14} />
+                        閱讀文章
+                      </button>
+                    )}
+                  </div>
                 )}
               </div>
-            )}
+            ))}
           </div>
-        ))}
+        </motion.div>
+
+        {/* Markdown Viewer Modal */}
+        <AnimatePresence>
+          {readingMarkdownUrl && (
+            <MarkdownArticleViewer 
+              url={readingMarkdownUrl} 
+              onClose={() => setReadingMarkdownUrl(null)} 
+            />
+          )}
+        </AnimatePresence>
+
       </motion.div>
-
-      {/* Markdown Viewer Modal */}
-      <AnimatePresence>
-        {readingMarkdownUrl && (
-          <MarkdownArticleViewer 
-            url={readingMarkdownUrl} 
-            onClose={() => setReadingMarkdownUrl(null)} 
-          />
-        )}
-      </AnimatePresence>
-
-    </div>
   );
 };
 

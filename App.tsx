@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Lenis from 'lenis';
 import Background from './components/Background';
 import MouseCanvas from './components/MouseCanvas';
 import Header from './components/Header';
@@ -8,7 +9,6 @@ import About from './components/About';
 import Projects from './components/Projects';
 import Workshop from './components/Workshop';
 import Experience from './components/Experience';
-import MiniGame from './components/MiniGame';
 import MusicPlayer from './components/MusicPlayer';
 
 const App: React.FC = () => {
@@ -16,20 +16,46 @@ const App: React.FC = () => {
   const [currentView, setCurrentView] = useState('home');
   const [showMusicPlayer, setShowMusicPlayer] = useState(false);
 
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // https://www.desmos.com/calculator/brs54l4xou
+      infinite: false,
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
+
   // 純 JS 導航處理函式
   const handleNavigate = (view: string) => {
     setCurrentView(view);
-    // 切換頁面時平滑滾動到頂部
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // 切換頁面時瞬移到頂部，避免與組件退場動畫衝突
+    window.scrollTo({ top: 0 });
     console.log('切換到'+view);
   };
 
   return (
-    // 使用 overflow-x-hidden 允許垂直滾動，同時保留 scanlines 效果
-    <div className="relative min-h-screen text-white overflow-x-hidden scanlines">
+    // 移除 overflow 以確保 position: sticky 正常運作 (移至 body 處理 x 軸 overflow)
+    <div className="relative min-h-screen text-white scanlines">
       {/* 視覺層 (固定背景) */}
       <Background />
       <MouseCanvas />
+      
+      {/* Experience 專屬背景顏色變換層，獨立於組件生命週期以達平滑過渡 */}
+      <motion.div 
+        animate={{ opacity: currentView === 'experience' ? 1 : 0 }}
+        transition={{ duration: 0.6 }}
+        className="fixed inset-0 bg-[#050505] z-0 pointer-events-none"
+      />
       
       {/* UI 層 */}
       <Header 
@@ -60,9 +86,6 @@ const App: React.FC = () => {
           )}
         </AnimatePresence>
       </main>
-      
-      {/* 互動層 */}
-      <MiniGame />
     </div>
   );
 };
