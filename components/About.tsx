@@ -54,8 +54,18 @@ const About: React.FC = () => {
     };
   }, [rotateXTarget, rotateYTarget]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
+
   return (
-    <div id="about-page" className="min-h-screen flex items-center justify-center p-4 pt-24 relative z-10 perspective-1000 select-none">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      id="about-page" 
+      className="min-h-screen flex items-center justify-center p-4 pt-24 relative z-10 perspective-1000 select-none"
+    >
       <div style={{ perspective: '1200px' }} className="w-full max-w-3xl flex justify-center">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -126,7 +136,7 @@ const About: React.FC = () => {
         </div>
       </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

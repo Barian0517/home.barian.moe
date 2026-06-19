@@ -29,9 +29,18 @@ const MouseCanvas: React.FC = () => {
 
     // Set initial position immediately on first mouse move to avoid flying in from corner
     let firstMove = true;
+    let isVisible = false;
+    // detect touch device
+    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    
+    // For non-touch devices, show cursor after first move
+    if (!isTouchDevice) {
+      isVisible = true;
+    }
 
     const handleMouseMove = (e: MouseEvent) => {
       mousePos.current = { x: e.clientX, y: e.clientY };
+      isVisible = true; // Always show on mouse move
       if (firstMove) {
         smoothedPos.current = { x: e.clientX, y: e.clientY };
         firstMove = false;
@@ -40,44 +49,69 @@ const MouseCanvas: React.FC = () => {
 
     const handleMouseDown = () => { isClicking.current = true; };
     const handleMouseUp = () => { isClicking.current = false; };
+    
+    // Touch events for mobile
+    const handleTouchStart = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      mousePos.current = { x: touch.clientX, y: touch.clientY };
+      smoothedPos.current = { x: touch.clientX, y: touch.clientY };
+      isClicking.current = true;
+      isVisible = true;
+      firstMove = false;
+    };
+    
+    const handleTouchMove = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      mousePos.current = { x: touch.clientX, y: touch.clientY };
+    };
+    
+    const handleTouchEnd = () => {
+      isClicking.current = false;
+      isVisible = false;
+    };
 
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mousedown', handleMouseDown);
     window.addEventListener('mouseup', handleMouseUp);
+    
+    window.addEventListener('touchstart', handleTouchStart);
+    window.addEventListener('touchmove', handleTouchMove);
+    window.addEventListener('touchend', handleTouchEnd);
+    window.addEventListener('touchcancel', handleTouchEnd);
 
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      if (!firstMove) {
+      if (isVisible && !firstMove) {
         // Lerp position for outer circle (smooth following)
         smoothedPos.current.x += (mousePos.current.x - smoothedPos.current.x) * 0.3;
         smoothedPos.current.y += (mousePos.current.y - smoothedPos.current.y) * 0.3;
+
+        // Lerp radius
+        const targetRadius = isClicking.current ? 12 : 16;
+        radiusObj.current.current += (targetRadius - radiusObj.current.current) * 0.3;
+
+        const { x, y } = mousePos.current;
+        const sx = smoothedPos.current.x;
+        const sy = smoothedPos.current.y;
+        const r = radiusObj.current.current;
+
+        const primaryColor = 'rgba(216, 180, 254, 0.9)'; // Light purple inner dot
+        const ringColor = 'rgba(216, 180, 254, 0.5)';    // Light purple outer ring
+
+        // Outer Circle (Smoothed position)
+        ctx.beginPath();
+        ctx.arc(sx, sy, r, 0, Math.PI * 2);
+        ctx.strokeStyle = ringColor;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Inner Dot (Exact position)
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = primaryColor;
+        ctx.fill();
       }
-
-      // Lerp radius
-      const targetRadius = isClicking.current ? 12 : 16;
-      radiusObj.current.current += (targetRadius - radiusObj.current.current) * 0.3;
-
-      const { x, y } = mousePos.current;
-      const sx = smoothedPos.current.x;
-      const sy = smoothedPos.current.y;
-      const r = radiusObj.current.current;
-
-      const primaryColor = 'rgba(216, 180, 254, 0.9)'; // Light purple inner dot
-      const ringColor = 'rgba(216, 180, 254, 0.5)';    // Light purple outer ring
-
-      // Outer Circle (Smoothed position)
-      ctx.beginPath();
-      ctx.arc(sx, sy, r, 0, Math.PI * 2);
-      ctx.strokeStyle = ringColor;
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-
-      // Inner Dot (Exact position)
-      ctx.beginPath();
-      ctx.arc(x, y, 4, 0, Math.PI * 2);
-      ctx.fillStyle = primaryColor;
-      ctx.fill();
 
       animationFrameId = requestAnimationFrame(render);
     };
@@ -89,6 +123,10 @@ const MouseCanvas: React.FC = () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('touchcancel', handleTouchEnd);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);

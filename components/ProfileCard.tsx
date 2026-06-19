@@ -82,8 +82,18 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ onNavigate }) => {
     };
   }, [rotateXTarget, rotateYTarget]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
+
   return (
-    <div id="profile-card-page" className="min-h-screen flex items-center justify-center p-4 pt-24 relative z-10 perspective-1000">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      id="profile-card-page" 
+      className="min-h-screen flex items-center justify-center p-4 pt-24 relative z-10 perspective-1000"
+    >
       {/* perspective 設置於外層容器 */}
       <div style={{ perspective: '1200px' }} className="w-full max-w-4xl flex justify-center select-none">
         
@@ -211,7 +221,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ onNavigate }) => {
             </div>
         </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

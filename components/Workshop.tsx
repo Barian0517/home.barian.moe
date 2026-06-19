@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Monitor, Tag, Cpu, Layout, Wrench, AppWindow, Terminal, ServerCog } from 'lucide-react';
 import { WorkshopItem } from '../types';
@@ -156,6 +156,10 @@ type CategoryType = 'web-tools' | 'static-web' | 'apps' | 'full-stack';
 
 const Workshop: React.FC = () => {
   const [activeTab, setActiveTab] = useState<CategoryType>('web-tools');
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
 
   // Helper to get current items
   const getCurrentItems = () => {

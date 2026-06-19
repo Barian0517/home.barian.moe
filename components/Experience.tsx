@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
-import { Terminal, Code, Box, Star, UserCheck, HeartHandshake, FileText, X } from 'lucide-react';
+import { Terminal, Code, Box, Star, UserCheck, HeartHandshake, FileText, X, ChevronDown } from 'lucide-react';
 
 interface ExperienceItem {
   id: string;
@@ -264,8 +264,18 @@ const MarkdownArticleViewer = ({ url, onClose }: { url: string, onClose: () => v
 const Experience: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>(categories[0].id);
   const [readingMarkdownUrl, setReadingMarkdownUrl] = useState<string | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const currentCategoryData = categories.find(c => c.id === activeCategory);
+
+  const handleCategoryClick = (catId: string) => {
+    setActiveCategory(catId);
+    setIsMobileMenuOpen(false);
+  };
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
 
   return (
     <motion.div 
@@ -280,42 +290,86 @@ const Experience: React.FC = () => {
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="sticky top-[140px] md:top-[70px] z-40 flex flex-col md:flex-row md:justify-between items-start md:items-end border-b border-white/10 pb-3 bg-[#050505]/95 backdrop-blur-md pt-4"
+          className="sticky top-[70px] md:top-[70px] z-40 bg-[#050505]/95 backdrop-blur-md border-b border-white/10 pt-4 pb-3"
         >
-          {/* Category Title */}
-          <div className="mb-4 md:mb-0 flex-shrink-0 pr-4">
-            <h2 className="text-4xl font-bold text-white mb-1 font-['Zen_Maru_Gothic'] tracking-wide">
-              {currentCategoryData?.name}
-            </h2>
-            <p className="text-gray-400 font-['Orbitron'] tracking-widest text-xs uppercase">
-               {currentCategoryData?.id.replace('-', ' ')}
-            </p>
+          <div className="flex flex-col md:flex-row md:justify-between items-start md:items-end w-full">
+            {/* Category Title & Mobile Toggle */}
+            <div className="w-full md:w-auto flex justify-between items-end mb-2 md:mb-0 pr-0 md:pr-4">
+              <div className="flex-shrink-0">
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-1 font-['Zen_Maru_Gothic'] tracking-wide">
+                  {currentCategoryData?.name}
+                </h2>
+                <p className="text-gray-400 font-['Orbitron'] tracking-widest text-xs uppercase">
+                   {currentCategoryData?.id.replace('-', ' ')}
+                </p>
+              </div>
+              
+              <button 
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="md:hidden flex items-center gap-2 bg-white/5 border border-white/10 px-3 py-2 rounded-full text-white font-['Zen_Maru_Gothic'] transition-colors hover:bg-white/10"
+              >
+                <span className="text-xs tracking-widest">目錄</span>
+                <ChevronDown size={14} className={`transition-transform duration-300 ${isMobileMenuOpen ? "rotate-180" : ""}`} />
+              </button>
+            </div>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex gap-6 overflow-x-auto hide-scrollbar w-auto pb-0">
+              {categories.map((cat) => {
+                const isActive = activeCategory === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => handleCategoryClick(cat.id)}
+                    className={`flex flex-col items-center gap-1 pb-1 transition-all cursor-pointer whitespace-nowrap relative ${
+                      isActive 
+                        ? 'text-white' 
+                        : 'text-gray-500 hover:text-gray-300'
+                    }`}
+                  >
+                    <span className="text-xs font-medium tracking-widest font-['Zen_Maru_Gothic']">{cat.name}</span>
+                    {isActive && (
+                      <motion.div 
+                        layoutId="nav-indicator"
+                        className="absolute bottom-[-13px] left-0 right-0 h-[1px] bg-white"
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </nav>
           </div>
 
-          <nav className="flex gap-4 md:gap-6 overflow-x-auto hide-scrollbar w-full md:w-auto pb-1 md:pb-0">
-            {categories.map((cat) => {
-              const isActive = activeCategory === cat.id;
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={`flex flex-col items-center gap-1 pb-1 transition-all cursor-pointer whitespace-nowrap relative ${
-                    isActive 
-                      ? 'text-white' 
-                      : 'text-gray-500 hover:text-gray-300'
-                  }`}
-                >
-                  <span className="text-xs font-medium tracking-widest font-['Zen_Maru_Gothic']">{cat.name}</span>
-                  {isActive && (
-                    <motion.div 
-                      layoutId="nav-indicator"
-                      className="absolute bottom-0 left-0 right-0 h-[1px] bg-white"
-                    />
-                  )}
-                </button>
-              );
-            })}
-          </nav>
+          {/* Mobile Navigation Dropdown */}
+          <AnimatePresence>
+            {isMobileMenuOpen && (
+              <motion.div 
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="md:hidden overflow-hidden flex flex-col pt-4"
+              >
+                <div className="flex flex-col gap-2 bg-white/[0.02] rounded-xl p-3 border border-white/5">
+                  {categories.map((cat) => {
+                    const isActive = activeCategory === cat.id;
+                    return (
+                      <button
+                        key={cat.id}
+                        onClick={() => handleCategoryClick(cat.id)}
+                        className={`text-left px-3 py-2 rounded-lg font-['Zen_Maru_Gothic'] text-sm tracking-widest transition-colors ${
+                          isActive 
+                            ? 'bg-white/10 text-white font-bold' 
+                            : 'text-gray-400 hover:text-gray-200 hover:bg-white/5'
+                        }`}
+                      >
+                        {cat.name}
+                      </button>
+                    )
+                  })}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
 
         {/* Content Area */}

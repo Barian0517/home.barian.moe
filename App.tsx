@@ -16,22 +16,26 @@ const App: React.FC = () => {
   const [currentView, setCurrentView] = useState('home');
   const [showMusicPlayer, setShowMusicPlayer] = useState(false);
 
+  const [lenis, setLenis] = useState<Lenis | null>(null);
+
   useEffect(() => {
-    const lenis = new Lenis({
+    const lenisInstance = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // https://www.desmos.com/calculator/brs54l4xou
       infinite: false,
     });
 
+    setLenis(lenisInstance);
+
     function raf(time: number) {
-      lenis.raf(time);
+      lenisInstance.raf(time);
       requestAnimationFrame(raf);
     }
 
     requestAnimationFrame(raf);
 
     return () => {
-      lenis.destroy();
+      lenisInstance.destroy();
     };
   }, []);
 
@@ -39,6 +43,10 @@ const App: React.FC = () => {
   const handleNavigate = (view: string) => {
     setCurrentView(view);
     // 切換頁面時瞬移到頂部，避免與組件退場動畫衝突
+    if (lenis) {
+      // force immediate scroll
+      lenis.scrollTo('top', { immediate: true });
+    }
     window.scrollTo({ top: 0 });
     console.log('切換到'+view);
   };

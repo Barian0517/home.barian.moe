@@ -26,8 +26,18 @@ const Projects: React.FC = () => {
     fetchRepos();
   }, []);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
+
   return (
-    <div id="github-repo-page" className="min-h-screen p-4 pt-28 pb-20 relative z-10 overflow-y-auto">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      id="github-repo-page" 
+      className="min-h-screen p-4 pt-28 pb-20 relative z-10 overflow-y-auto"
+    >
       <div className="max-w-7xl mx-auto">
         <div className="mb-10 flex items-center justify-between border-b border-white/10 pb-4">
            <h2 className="text-3xl md:text-4xl font-bold text-white font-['Orbitron'] tracking-wider">
@@ -52,7 +62,7 @@ const Projects: React.FC = () => {
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
