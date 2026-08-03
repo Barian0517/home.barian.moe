@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Monitor, Tag, Cpu, Layout, Wrench, AppWindow, Terminal, ServerCog } from 'lucide-react';
+import { ExternalLink, Monitor, Tag, Cpu, Layout, Wrench, AppWindow, Terminal, ServerCog, Box } from 'lucide-react';
 import { WorkshopItem } from '../types';
 import GlitchText from './GlitchText';
 
@@ -152,7 +152,65 @@ const fullstackItems: WorkshopItem[] = [
   }
 ];
 
-type CategoryType = 'web-tools' | 'static-web' | 'apps' | 'full-stack';
+// 5. Minecraft模組 (Minecraft Mods) - 新增分類
+const mcModItems: WorkshopItem[] = [
+  {
+    id: 401,
+    title: "wurst-fork",
+    description: "Wurst client 的分支版本，進行了自訂的修改與功能增強。",
+    imageUrl: "", 
+    linkUrl: "https://github.com/Barian0517/wurst-fork",
+    tags: ["Minecraft", "Mod", "Hack", "Fork"],
+    date: "2026"
+  },
+  {
+    id: 402,
+    title: "logwindow-mcmod",
+    description: "一個實用的 Minecraft 模組，用於在遊戲內獨立的視窗中顯示日誌資訊，方便伺服器管理或模組開發除錯。",
+    imageUrl: "", 
+    linkUrl: "https://github.com/Barian0517/logwindow-mcmod",
+    tags: ["Minecraft", "Mod", "Optimization"],
+    date: "2026"
+  },
+  {
+    id: 403,
+    title: "multiworld-forge",
+    description: "為了解決依賴部分 Fabric 內容導致與信雅互聯衝突的問題，並在此基礎上額外實現了其他功能的 Multiworld Mod 分支。",
+    imageUrl: "", 
+    linkUrl: "https://github.com/Barian0517/multiworld-forge",
+    tags: ["Minecraft", "Mod", "Worldgen"],
+    date: "2026"
+  },
+  {
+    id: 404,
+    title: "darkanvil",
+    description: "一個僅用來獨立實現 Goety 模組中 Dark Anvil (暗黑鐵砧) 功能的模組。",
+    imageUrl: "", 
+    linkUrl: "https://github.com/Barian0517/darkanvil",
+    tags: ["Minecraft", "Mod", "Equipment"],
+    date: "2026"
+  },
+  {
+    id: 405,
+    title: "safe_beacon-mcmod",
+    description: "讓烽火台能提供額外的保護功能，增強玩家在烽火台範圍內的生存能力或守護基地安全。",
+    imageUrl: "", 
+    linkUrl: "https://github.com/Barian0517/safe_beacon-mcmod",
+    tags: ["Minecraft", "Mod", "Game-Mechanics", "Utility"],
+    date: "2026"
+  },
+  {
+    id: 406,
+    title: "InventoryRollbackforge",
+    description: "Forge 版本的物品欄回溯模組 (Inventory Rollback)，用於在玩家死亡或發生意外時還原裝備與物品。",
+    imageUrl: "", 
+    linkUrl: "https://github.com/Barian0517/InventoryRollbackforge",
+    tags: ["Minecraft", "Mod", "Management"],
+    date: "2026"
+  }
+];
+
+type CategoryType = 'web-tools' | 'static-web' | 'apps' | 'full-stack' | 'mc-mods';
 
 const Workshop: React.FC = () => {
   const [activeTab, setActiveTab] = useState<CategoryType>('web-tools');
@@ -168,6 +226,7 @@ const Workshop: React.FC = () => {
       case 'static-web': return staticWebItems;
       case 'apps': return appItems;
       case 'full-stack': return fullstackItems;
+      case 'mc-mods': return mcModItems;
       default: return [];
     }
   };
@@ -179,6 +238,7 @@ const Workshop: React.FC = () => {
       case 'static-web': return '#00bfff'; // Blue
       case 'apps': return '#ff00ff'; // Purple/Pink
       case 'full-stack': return '#10b981'; // Emerald
+      case 'mc-mods': return '#ff5555'; // Red
     }
   };
 
@@ -240,6 +300,14 @@ const Workshop: React.FC = () => {
               onClick={() => setActiveTab('apps')}
               icon={<Terminal size={16} />}
               color="#ff00ff"
+            />
+            <TabButton 
+              label="MC 模組" 
+              subLabel="MC MODS"
+              isActive={activeTab === 'mc-mods'} 
+              onClick={() => setActiveTab('mc-mods')}
+              icon={<Box size={16} />}
+              color="#ff5555"
             />
           </div>
         </div>

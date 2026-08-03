@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import { Terminal, Code, Box, Star, UserCheck, HeartHandshake, FileText, X, ChevronDown } from 'lucide-react';
+import { GitHubCalendar as GitCal } from 'react-github-calendar';
 
 interface ExperienceItem {
   id: string;
@@ -10,6 +11,8 @@ interface ExperienceItem {
   description: string[];
   markdownUrl?: string;
   links?: {label: string; url: string}[];
+  projectType?: 'web' | 'game-modding' | 'app' | 'ai' | 'server';
+  customComponent?: React.ReactNode;
 }
 
 interface Category {
@@ -75,6 +78,7 @@ const categories: Category[] = [
       {
         id: "live-websites",
         title: "個人網站 (Live Projects)",
+        projectType: 'web',
         description: [
           "**個人主頁**：特色為 動態 GitHub API 讀取、陀螺儀動畫(手機端)、滑鼠動畫(電腦端)、多頁面/子頁面切換內容、外部連結。",
           "**個人介紹**：特色為 全局櫻花特效、音樂播放器、啟動動畫、外部連結。音樂可從後台修改列表。啟動動畫為純程式編寫並含雙擊跳過功能。",
@@ -103,8 +107,60 @@ const categories: Category[] = [
         ]
       },
       {
+        id: "mc-mods-wurst",
+        title: "Minecraft 模組開發與移植",
+        projectType: 'game-modding',
+        description: [
+          "**外掛客戶端 Wurst7 (26.2/1.20.1)**：成功在自研/Fork 的客戶端新增多項功能：陀螺、esp邊緣發光效果、傷害顯示、更暴力的重槌(26.2版本)、箭矢大幅度增傷與搭配增傷的自動瞄準與自動開火(1.20.1版本)、更準確的自瞄(1.20.1版本)、高階預判自瞄演算法、自動躲避彈射物(AutoDodge 1.20.1版本)。",
+          "**Apex Movement 移植**：結合 Apex Legends 的身法機制實作於 Minecraft 中（僅蹬牆跳）。",
+          "**多世界管理模組 (multiworld-forge)**：完全移除了對 Fabric 的依賴，大幅降低並避免與特定第三方內容產生衝突。新增多項與模組隔離相關的強大參數（控制子世界的地形/生態系生成），新增多種原版特殊地形支援。並深度重寫與整合 WorldEdit 的 //regen 機制，完美銜接原生 Undo 支援。",
+          "**黑暗鐵砧模組 (darkanvil)**：實現 Goety 中黑暗鐵砧的功能，打破原版鐵砧限制，允許無視附魔等級上限與衝突強行合併。實作靈魂營火修復機制，並具備智慧相容模式自動偵測 Goety 模組隱藏自身物品。",
+          "**獨立日誌視窗模組 (logwindow-mcmod)**：獨立 Java Swing 視窗即時攔截與顯示 Log4j2 輸出，並設有記憶體保護機制。",
+          "**結界安全信標模組 (safe_beacon-mcmod)**：使用特定材料搭建的信標可提供多層次安全防護（防火、免疫爆炸、攔截彈射物、阻止怪物生成、驅逐怪物及圈養友善生物），並可隨層數增加範圍。",
+          "**物品欄回溯模組 (InventoryRollbackforge)**：全方位玩家狀態備份，完美相容 Curios 飾品插槽。提供進階視覺化 GUI 與交互，以及快捷打包技術將備份導出為實體箱子。"
+        ],
+        links: [
+          { label: "wurst-fork", url: "https://github.com/Barian0517/wurst-fork" },
+          { label: "multiworld-forge", url: "https://github.com/Barian0517/multiworld-forge" },
+          { label: "darkanvil", url: "https://github.com/Barian0517/darkanvil" },
+          { label: "logwindow-mcmod", url: "https://github.com/Barian0517/logwindow-mcmod" },
+          { label: "safe_beacon-mcmod", url: "https://github.com/Barian0517/safe_beacon-mcmod" },
+          { label: "InventoryRollbackforge", url: "https://github.com/Barian0517/InventoryRollbackforge" }
+        ]
+      },
+      {
+        id: "yugioh-dev",
+        title: "Yu-Gi-Oh! (遊戲王) 系統開發",
+        projectType: 'game-modding',
+        description: [
+          "**自製卡片編輯器**：開發遊戲王自製卡片編輯器前後端。",
+          "**私人伺服器入口**：開發遊戲王私人服務器網站前後端。",
+          "**完整功能卡片製作器**：涵蓋卡片信息自動生成cdb、卡圖自動生成、lua線上編寫、卡包打包投稿及管理員審核上架服務器。",
+          "**自製卡更新器**：開發用於 mdpro 的自製卡更新器，用於同步自製卡服務器的自製卡。",
+          "**ygopro3 專案貢獻**：幫忙對 ygopro3 專案增加部分功能。"
+        ],
+        links: [
+          { label: "自製卡片編輯器", url: "https://ygoserver.barian.moe/" },
+          { label: "私人伺服器官網", url: "https://ygoproweb.barian.moe/" }
+        ]
+      },
+      {
+        id: "sakura-player",
+        title: "sakura player (音樂播放軟體)",
+        projectType: 'app',
+        description: [
+          "**多來源支援**：開發個人音樂撥放軟體，支援網易雲音樂、Bilibili、novidrome、本地音樂等多種來源，並共享撥放序列。",
+          "**網易雲整合**：支援帳號登入與漫遊、歌單、搜尋、推薦、喜歡的音樂。",
+          "**Bilibili整合**：支援帳號登入、收藏夾、搜尋、推薦、喜歡的影片。",
+          "**novidrome整合**：支援帳號登入、歌單、搜尋、最新歌曲、喜歡的音樂。",
+          "**Rust / Tauri 架構重構**：成功將原先以靜態網頁 React 為主架構的音樂可視化工具重構為 Rust / Tauri 跨平台桌面應用程式，並處理其崩潰與架構遷移。",
+          "**WebRTC 音訊串流**：實作 WebRTC 音訊串流系統，允許使用者選中一個分頁對聲音來源做及時處理，生成可視化音樂效果。"
+        ]
+      },
+      {
         id: "ai-auto-player",
         title: "音遊自動通關 (YOLOv8 & ADB)",
+        projectType: 'ai',
         description: [
           "**訓練**：在遊戲過程中，擷取了200多張遊戲畫面，透過 X-AnyLabeling 標注 100 張後，生成建議模型快速標注，訓練出共約 500 張遊戲截圖的模型。",
           "**運作思路**：取得畫面 => ai 分析音符 => 運算點擊時機與位置 => 對手機進行點擊。",
@@ -117,6 +173,7 @@ const categories: Category[] = [
       {
         id: "modsync",
         title: "服務器模組同步 (Modsync V2)",
+        projectType: 'server',
         description: [
           "透過向服務器取得需同步的資料夾列表後，自動創建缺少的資料夾。一一比對資料夾內容（檔案名稱與 md5 雙重比對），根據需要進行缺失檔案下載與多餘檔案刪除。",
           "缺失內容高達一定比例時會觸發整包下載功能加快下載速度。設計了容錯邏輯，避免因丟包等不確定因素誤刪。"
@@ -128,6 +185,7 @@ const categories: Category[] = [
       {
         id: "mc-server",
         title: "Minecraft 伺服器群組架構",
+        projectType: 'server',
         description: [
           "基於 Linux (Debian) 環境，從底層 SSH 安全配置、Java/Python 環境搭建、MCSManager 管理平台部署，到前端官網與資料庫（服務器模組清單）聯動，實現全自動化運維。",
           "透過 MySQL / Mariadb 建立資料表進行跨服務器的玩家數據同步。處理過代理環境下 WebSocket 直連連線中斷的複雜網路問題（MCS Manager）。"
@@ -136,6 +194,7 @@ const categories: Category[] = [
       {
         id: "android-downgrade",
         title: "Android 系統逆向降級實踐",
+        projectType: 'app',
         description: [
           "針對 ROG Phone 7 閉源環境，難以在安卓 15 環境下解鎖 bootloader 取得 root 權限，也難以透過 raw 線刷包降級。",
           "嘗試模擬 OTA 伺服器，讓手機收到自行修改的更新資訊並下載安裝本地降級包以繞過 Bootloader 鎖定。目前受阻於系統程式不信任使用者安裝的 CA 憑證下載強行中斷，正在對更新機制與憑證信任鏈深入研究。"
@@ -144,6 +203,7 @@ const categories: Category[] = [
       {
         id: "ai-auto-answering",
         title: "基於 AI 的自動答題系統（娛樂向）",
+        projectType: 'ai',
         description: [
           "為解決線上題目冗長問題，開發了自動答題系統。流程：讀取題目 => 使用 OCR 轉換為文字或發送圖片 => 將內容與約束要求(JSON)發送給 AI => 接收回應，以懸浮窗形式顯示。",
           "支持 OpenAI API (liteLLM) 與 Gemini API，使用自製的離線卡密系統。卡密演算法結合硬體 ID 與到期日綜合加密。解密時透過國家日期 API 取得當前日期比對到期日，使用強制 SSL 驗證防止封包竄改。",
@@ -156,6 +216,7 @@ const categories: Category[] = [
       {
         id: "running-services",
         title: "運營中的服務器",
+        projectType: 'server',
         description: [
           "自行維護了多個生產環境、穩定運營中的實用雲端服務。"
         ],
@@ -209,10 +270,18 @@ const categories: Category[] = [
       {
         id: "github-contrib",
         title: "開源社群參與",
-        description: [
-          "對於我有在使用的 GitHub 專案，遇到問題、發現 bug 都會積極收集 log 與進行多次測試總結出詳細的觸發條件，方便作者修復。",
-          "過去一年於 GitHub 上貢獻了約 370 次。"
-        ],
+        description: [],
+        customComponent: (
+          <div className="mt-4 p-4 bg-white/5 border border-white/10 rounded-xl overflow-x-auto hide-scrollbar flex justify-center text-white">
+            <GitCal 
+              username="Barian0517" 
+              colorScheme="dark"
+              blockSize={14}
+              blockMargin={4}
+              fontSize={14}
+            />
+          </div>
+        ),
         links: [
           { label: "GitHub: Barian0517", url: "https://github.com/Barian0517" }
         ]
@@ -271,15 +340,26 @@ const MarkdownArticleViewer = ({ url, onClose }: { url: string, onClose: () => v
 };
 
 
+const PROJECT_TYPES = [
+  { id: 'all', name: '全部分類' },
+  { id: 'web', name: '網頁開發' },
+  { id: 'game-modding', name: '遊戲輔助與模組' },
+  { id: 'app', name: '應用與系統開發' },
+  { id: 'ai', name: 'AI 自動化' },
+  { id: 'server', name: '伺服器與維運' }
+];
+
 const Experience: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>(categories[0].id);
   const [readingMarkdownUrl, setReadingMarkdownUrl] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [selectedProjectType, setSelectedProjectType] = useState<string>('all');
 
   const currentCategoryData = categories.find(c => c.id === activeCategory);
 
   const handleCategoryClick = (catId: string) => {
     setActiveCategory(catId);
+    setSelectedProjectType('all'); // Reset filter when category changes
     setIsMobileMenuOpen(false);
   };
 
@@ -302,9 +382,9 @@ const Experience: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="sticky top-[70px] md:top-[70px] z-40 bg-[#050505]/95 backdrop-blur-md border-b border-white/10 pt-4 pb-3"
         >
-          <div className="flex flex-col md:flex-row md:justify-between items-start md:items-end w-full">
+          <div className="flex flex-col gap-4 w-full">
             {/* Category Title & Mobile Toggle */}
-            <div className="w-full md:w-auto flex justify-between items-end mb-2 md:mb-0 pr-0 md:pr-4">
+            <div className="w-full flex justify-between items-end pr-0">
               <div className="flex-shrink-0">
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-1 font-['Zen_Maru_Gothic'] tracking-wide">
                   {currentCategoryData?.name}
@@ -324,22 +404,25 @@ const Experience: React.FC = () => {
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex gap-6 overflow-x-auto hide-scrollbar w-auto pb-0">
+            <nav className="hidden md:flex gap-6 lg:gap-10 w-full pt-4 pb-2 mt-2 border-t border-white/5 overflow-x-auto hide-scrollbar">
               {categories.map((cat) => {
                 const isActive = activeCategory === cat.id;
                 return (
                   <button
                     key={cat.id}
                     onClick={() => handleCategoryClick(cat.id)}
-                    className={`flex flex-col items-center gap-1 pb-1 transition-all cursor-pointer whitespace-nowrap relative group ${
+                    className={`flex items-center gap-2 pb-2 transition-all cursor-pointer relative group whitespace-nowrap ${
                       isActive 
                         ? 'text-white' 
                         : 'text-gray-500 hover:text-gray-300'
                     }`}
                   >
-                    <span className="text-xs font-medium tracking-widest font-['Zen_Maru_Gothic']">{cat.name}</span>
+                    <span className={`transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-50 group-hover:opacity-80'}`}>
+                      {cat.icon}
+                    </span>
+                    <span className="text-sm font-medium tracking-widest font-['Zen_Maru_Gothic']">{cat.name}</span>
                     <span 
-                      className={`absolute bottom-[-13px] left-0 h-[1px] bg-white transition-all duration-300 ${isActive ? 'w-full' : 'w-0'}`}
+                      className={`absolute bottom-[-8px] left-0 h-[2px] bg-white transition-all duration-300 ${isActive ? 'w-full' : 'w-0 group-hover:w-1/2 group-hover:bg-gray-500'}`}
                     />
                   </button>
                 );
@@ -385,10 +468,31 @@ const Experience: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex-1 flex flex-col gap-8"
+          className={`flex-1 flex ${activeCategory === 'featured-projects' ? 'flex-col md:flex-row gap-8 lg:gap-12' : 'flex-col gap-8'}`}
         >
-          <div className="grid grid-cols-1 gap-6">
-            {currentCategoryData?.items.map((item) => (
+          {/* Sidebar for featured-projects */}
+          {activeCategory === 'featured-projects' && (
+            <div className="w-full md:w-56 lg:w-64 flex-shrink-0">
+              <div className="sticky top-[180px] flex flex-row md:flex-col gap-2 overflow-x-auto hide-scrollbar pb-2 md:pb-0">
+                {PROJECT_TYPES.map(type => (
+                  <button
+                    key={type.id}
+                    onClick={() => setSelectedProjectType(type.id)}
+                    className={`text-left px-4 py-3 rounded-xl font-['Zen_Maru_Gothic'] text-sm tracking-widest transition-all whitespace-nowrap flex-shrink-0 ${
+                      selectedProjectType === type.id
+                        ? 'bg-white/10 text-white font-bold border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.05)]'
+                        : 'text-gray-400 hover:text-gray-200 hover:bg-white/5 border border-transparent'
+                    }`}
+                  >
+                    {type.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="flex-1 grid grid-cols-1 gap-6">
+            {currentCategoryData?.items.filter(item => activeCategory !== 'featured-projects' || selectedProjectType === 'all' || item.projectType === selectedProjectType).map((item) => (
               <div key={item.id} className="bg-white/[0.02] border border-white/5 rounded-xl p-6 md:p-8 hover:bg-white/[0.04] transition-colors duration-500">
                 <h3 className="text-xl md:text-2xl font-bold text-gray-100 mb-4 font-['Zen_Maru_Gothic'] flex items-center gap-3">
                    {item.title}
@@ -413,6 +517,12 @@ const Experience: React.FC = () => {
                     );
                   })}
                 </div>
+
+                {item.customComponent && (
+                  <div className="mt-4 w-full">
+                    {item.customComponent}
+                  </div>
+                )}
 
                 {/* Links and Markdown Button */}
                 {(item.links || item.markdownUrl) && (
