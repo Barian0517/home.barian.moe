@@ -113,19 +113,23 @@ const categories: Category[] = [
         description: [
           "**外掛客戶端 Wurst7 (26.2/1.20.1)**：成功在自研/Fork 的客戶端新增多項功能：陀螺、esp邊緣發光效果、傷害顯示、更暴力的重槌(26.2版本)、箭矢大幅度增傷與搭配增傷的自動瞄準與自動開火(1.20.1版本)、更準確的自瞄(1.20.1版本)、高階預判自瞄演算法、自動躲避彈射物(AutoDodge 1.20.1版本)。",
           "**Apex Movement 移植**：結合 Apex Legends 的身法機制實作於 Minecraft 中（僅蹬牆跳）。",
-          "**多世界管理模組 (multiworld-forge)**：完全移除了對 Fabric 的依賴，大幅降低並避免與特定第三方內容產生衝突。新增多項與模組隔離相關的強大參數（控制子世界的地形/生態系生成），新增多種原版特殊地形支援。並深度重寫與整合 WorldEdit 的 //regen 機制，完美銜接原生 Undo 支援。",
+          "**多世界管理模組 (Multiverse-Forge-V2)**：受到 multiworld / multiverse 啟發重作的 1.20.1 forge 多世界模組。完全移除了對 Fabric 的依賴，大幅降低並避免與特定第三方內容產生衝突。新增多項與模組隔離相關的強大參數（控制子世界的地形/生態系生成），新增多種原版特殊地形支援。並深度重寫與整合 WorldEdit 的 //regen 機制，完美銜接原生 Undo 支援。",
           "**黑暗鐵砧模組 (darkanvil)**：實現 Goety 中黑暗鐵砧的功能，打破原版鐵砧限制，允許無視附魔等級上限與衝突強行合併。實作靈魂營火修復機制，並具備智慧相容模式自動偵測 Goety 模組隱藏自身物品。",
           "**獨立日誌視窗模組 (logwindow-mcmod)**：獨立 Java Swing 視窗即時攔截與顯示 Log4j2 輸出，並設有記憶體保護機制。",
           "**結界安全信標模組 (safe_beacon-mcmod)**：使用特定材料搭建的信標可提供多層次安全防護（防火、免疫爆炸、攔截彈射物、阻止怪物生成、驅逐怪物及圈養友善生物），並可隨層數增加範圍。",
-          "**物品欄回溯模組 (InventoryRollbackforge)**：全方位玩家狀態備份，完美相容 Curios 飾品插槽。提供進階視覺化 GUI 與交互，以及快捷打包技術將備份導出為實體箱子。"
+          "**物品欄回溯模組 (InventoryRollbackforge)**：全方位玩家狀態備份，完美相容 Curios 飾品插槽。提供進階視覺化 GUI 與交互，以及快捷打包技術將備份導出為實體箱子。",
+          "**Essentials 基礎模組 (essentialsforge-by-barian)**：帶有完善 GUI 功能的 Essentials 模組。提供 Warp、高自定義 Home、跨維度傳送 (Dimwarp)、原創好友系統與 TPA 請求功能，全功能皆支援 GUI 點擊操作與傳統指令模式。",
+          "**精妙背包附加 (Sophisticated-Backpacks-addon)**：為精妙背包新增三種升級，包含神化護符升級（允許背包內的護符生效）、不死圖騰升級（死亡時自動消耗背包內的圖騰），以及絕對磁鐵升級（將玩家擊殺產生的掉落物自動吸入背包，防止大量掉落物實體造成伺服器卡頓）。"
         ],
         links: [
           { label: "wurst-fork", url: "https://github.com/Barian0517/wurst-fork" },
-          { label: "multiworld-forge", url: "https://github.com/Barian0517/multiworld-forge" },
+          { label: "Multiverse-Forge-V2", url: "https://github.com/Barian0517/Multiverse-Forge-V2" },
           { label: "darkanvil", url: "https://github.com/Barian0517/darkanvil" },
           { label: "logwindow-mcmod", url: "https://github.com/Barian0517/logwindow-mcmod" },
           { label: "safe_beacon-mcmod", url: "https://github.com/Barian0517/safe_beacon-mcmod" },
-          { label: "InventoryRollbackforge", url: "https://github.com/Barian0517/InventoryRollbackforge" }
+          { label: "InventoryRollbackforge", url: "https://github.com/Barian0517/InventoryRollbackforge" },
+          { label: "essentialsforge", url: "https://github.com/Barian0517/essentialsforge-by-barian" },
+          { label: "Sophisticated-Backpacks-addon", url: "https://github.com/Barian0517/Sophisticated-Backpacks-addon" }
         ]
       },
       {

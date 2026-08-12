@@ -53,4 +53,5 @@ export interface WorkshopItem {
   linkUrl: string;
   tags: string[];
   date?: string;
+  versions?: string[];
 }

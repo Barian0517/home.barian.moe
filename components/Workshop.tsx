@@ -161,6 +161,7 @@ const mcModItems: WorkshopItem[] = [
     imageUrl: "", 
     linkUrl: "https://github.com/Barian0517/wurst-fork",
     tags: ["Minecraft", "Mod", "Hack", "Fork"],
+    versions: ["1.20.1 fabric", "1.21.1 fabric", "26.2 fabric", "支持信雅互聯"],
     date: "2026"
   },
   {
@@ -170,15 +171,17 @@ const mcModItems: WorkshopItem[] = [
     imageUrl: "", 
     linkUrl: "https://github.com/Barian0517/logwindow-mcmod",
     tags: ["Minecraft", "Mod", "Optimization"],
+    versions: ["1.20.1 forge"],
     date: "2026"
   },
   {
     id: 403,
-    title: "multiworld-forge",
-    description: "為了解決依賴部分 Fabric 內容導致與信雅互聯衝突的問題，並在此基礎上額外實現了其他功能的 Multiworld Mod 分支。",
+    title: "Multiverse-Forge-V2",
+    description: "受到 multiworld / multiverse 啟發重作的 1.20.1 forge 多世界模組。",
     imageUrl: "", 
-    linkUrl: "https://github.com/Barian0517/multiworld-forge",
+    linkUrl: "https://github.com/Barian0517/Multiverse-Forge-V2",
     tags: ["Minecraft", "Mod", "Worldgen"],
+    versions: ["1.20.1 forge"],
     date: "2026"
   },
   {
@@ -188,6 +191,7 @@ const mcModItems: WorkshopItem[] = [
     imageUrl: "", 
     linkUrl: "https://github.com/Barian0517/darkanvil",
     tags: ["Minecraft", "Mod", "Equipment"],
+    versions: ["1.20.1 forge"],
     date: "2026"
   },
   {
@@ -197,6 +201,7 @@ const mcModItems: WorkshopItem[] = [
     imageUrl: "", 
     linkUrl: "https://github.com/Barian0517/safe_beacon-mcmod",
     tags: ["Minecraft", "Mod", "Game-Mechanics", "Utility"],
+    versions: ["1.20.1 forge"],
     date: "2026"
   },
   {
@@ -206,6 +211,27 @@ const mcModItems: WorkshopItem[] = [
     imageUrl: "", 
     linkUrl: "https://github.com/Barian0517/InventoryRollbackforge",
     tags: ["Minecraft", "Mod", "Management"],
+    versions: ["1.20.1 forge"],
+    date: "2026"
+  },
+  {
+    id: 407,
+    title: "essentialsforge-by-barian",
+    description: "帶有完善 GUI 功能的 Essentials 基礎模組。提供 Warp、自定義 Home、跨維度傳送 (Dimwarp)、原創好友系統與 TPA 請求功能，全功能皆支援 GUI 點擊操作與傳統指令模式。",
+    imageUrl: "", 
+    linkUrl: "https://github.com/Barian0517/essentialsforge-by-barian",
+    tags: ["Minecraft", "Mod", "Essentials", "Utility"],
+    versions: ["1.20.1 forge"],
+    date: "2026"
+  },
+  {
+    id: 408,
+    title: "Sophisticated-Backpacks-addon",
+    description: "精妙背包的附加模組，新增三種升級：神化護符升級（使背包內的護符生效）、不死圖騰升級（死亡時消耗背包內的圖騰）、絕對磁鐵升級（擊殺掉落物自動進入背包，防止大量實體卡頓）。",
+    imageUrl: "", 
+    linkUrl: "https://github.com/Barian0517/Sophisticated-Backpacks-addon",
+    tags: ["Minecraft", "Mod", "Addon", "Utility"],
+    versions: ["1.20.1 forge"],
     date: "2026"
   }
 ];
@@ -564,6 +590,20 @@ const WorkshopCard: React.FC<{
 
         {/* Tags */}
         <div className="flex flex-wrap gap-2 mb-6">
+            {item.versions && item.versions.map(ver => (
+                <div 
+                    key={ver}
+                    className="flex items-center gap-1 text-[10px] px-2 py-1 rounded border"
+                    style={{ 
+                        borderColor: '#22c55e40', // Tailwind green-500 with opacity
+                        backgroundColor: '#22c55e10',
+                        color: '#22c55e'
+                    }}
+                >
+                    <Box size={10} />
+                    {ver}
+                </div>
+            ))}
             {item.tags.map(tag => (
                 <div 
                     key={tag} 
@@ -597,7 +637,7 @@ const WorkshopCard: React.FC<{
               }}
             >
               <ExternalLink size={18} />
-              {category === 'apps' ? '查看專案' : (category === 'static-web' || category === 'full-stack' ? '訪問網站' : '啟動工具')}
+              {category === 'apps' ? '查看專案' : (category === 'static-web' || category === 'full-stack' ? '訪問網站' : (category === 'mc-mods' ? '前往 GitHub' : '啟動工具'))}
             </a>
         </div>
       </div>
