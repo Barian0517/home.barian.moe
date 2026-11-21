@@ -67,6 +67,16 @@ const categories: Category[] = [
           "**伺服器運維**：於 Debian 12 (CLI-only) 環境架構 Minecraft 伺服器，熟練配置 Java/Python 環境、SSH 金鑰安全驗證及 SFTP 檔案傳輸。",
           "**網路配置**：熟悉路由器 DMZ、連接埠映射 (Port Forwarding)，並搭配 Nginx Proxy Manager 與 Namecheap 域名實現多服務（Cloudreve / Immich / MCSManager）的外部訪問。"
         ]
+      },
+      {
+        id: "android-system-dev",
+        title: "Android 底層開發與系統調校 (Android Internals & Hooking)",
+        description: [
+          "**Android 漏洞與免解鎖提權架構**：在未解鎖 Bootloader 的裝置上，透過 Linux 內核與 Android 運行時漏洞（gghostlock / DirtyFrag 機制）掛載 KernelSU（OverlayFS）與 Vector 運行時框架（RAM Hook），並配置 Systemless 無損修改與環境隱藏（HMA / Shamiko）。",
+          "**Xposed / LSPosed 與 Vector 框架開發**：基於 de.robv.android.xposed（API 82）與 VectorLegacyBridge 架構，針對系統核心進程（system_server）及 Android Framework（WifiServiceImpl、WindowManagerService）實作 Method Hooking，並處理 Android 16 / ColorOS 16 上因 ART deoptimize 導致的攔截相容性問題。",
+          "**Linux 內核調度與高通溫控逆向**：拆解 Android 三層溫控架構（守護程式、sysfs 內核節點、HAL 層），透過 POSIX 進程信號（SIGSTOP / SIGCONT）與 sysfs 動態覆寫，在不卡死 Binder HAL 且無需重啟的前提下暫停溫控降頻。",
+          "**原生 Android 系統級應用開發**：使用 Kotlin、MVVM 與 Coroutines 開發常駐型（Foreground Service）輔助工具，實作 WindowManager 懸浮窗覆蓋、自定義手勢攔截分發（InterceptFrameLayout）與 AppOps 權限狀態即時讀取。"
+        ]
       }
     ]
   },
@@ -75,6 +85,26 @@ const categories: Category[] = [
     name: "代表性專案經驗",
     icon: <Star size={20} />,
     items: [
+      {
+        id: "sidebar-mod",
+        title: "SidebarMod 全域系統輔助與溫控調校工具",
+        projectType: 'app',
+        description: [
+          "**架構與懸浮側邊欄**：基於 Kotlin、MVVM 與 Coroutines 開發的 Android 14~16（適配 ColorOS / Realme UI）系統輔助工具。透過 WindowManager 與自定義手勢攔截容器（InterceptFrameLayout），實作不干擾前景遊戲的半透明膠囊條與動態圓形懸浮球。",
+          "**Xposed 框架層防熱點斷線守護**：使用 VectorLegacyBridge 針對 system_server 進程中的 WifiServiceImpl.stopSoftAp() 進行 Method Hook，攔截系統省電與溫控策略強制關閉熱點；並透過 Root 協程監聽 wlan2 虛擬網卡狀態，在斷線時自動重新喚醒。",
+          "**高通／ColorOS 溫控暫停機制**：透過發送 SIGSTOP 信號掛起 thermal-engine-v2 守護進程並禁用 sysfs 溫控分區，同時維持 HAL 層正常通訊（SIGCONT），在不卡死系統服務、相容遊戲模式且無需重啟的前提下暫停系統溫控。",
+          "**全域硬體隱私 HUD 與開發者中心**：即時解析底層 AppOps 狀態，動態懸浮提示背景應用的相機（CAM）、麥克風（MIC）、定位（GPS）與錄屏（REC）調用；並整合 USB/無線偵錯自動解析、模擬位置與 LSPosed 快捷入口。"
+        ]
+      },
+      {
+        id: "termux-agy-agent",
+        title: "Termux + Agy CLI 移動端系統級自動化架構",
+        projectType: 'ai',
+        description: [
+          "**架構與實作內容**：在 Android Termux 環境中整合 Agy CLI 與 Root 權限，於手機本機執行自動化操作流程，涵蓋應用程式安裝與解除安裝、底層檔案系統讀寫、使用者資料修改及系統服務設定。",
+          "**已完成之自動化任務**：透過該工作流自動完成 Chrome 瀏覽器歷史紀錄的底層抓取與還原、跨 Android 使用者空間的應用程式資料遷移，以及將 LSPosed 模組作用域套用至系統分身（多開空間）。"
+        ]
+      },
       {
         id: "live-websites",
         title: "個人網站 (Live Projects)",
@@ -242,9 +272,9 @@ const categories: Category[] = [
         id: "skills-list",
         title: "專業技能",
         description: [
-          "**程式語言**：Python, JavaScript, CSS (Animation), SQL, Bash Shell",
-          "**伺服器系統**：Linux (Debian/Ubuntu/Manjaro), Windows, Proxmox VE",
-          "**關鍵技術**：Docker, Nginx, YOLOv8, Stable Diffusion, ADB, SSH Tunneling, mitmproxy"
+          "**程式語言**：Kotlin, Java, Python, JavaScript, CSS (Animation), SQL, Bash Shell",
+          "**伺服器與系統環境**：Linux (Debian/Ubuntu/Manjaro), Android (AOSP / ColorOS Internals), Windows, Proxmox VE",
+          "**關鍵技術與框架**：KernelSU, LSPosed / Xposed (Vector), Android Framework Hook, Docker, Nginx, YOLOv8, Stable Diffusion, ADB, SSH Tunneling, mitmproxy, Termux"
         ]
       }
     ]
