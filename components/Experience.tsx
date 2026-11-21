@@ -93,7 +93,7 @@ const categories: Category[] = [
           "**架構與懸浮側邊欄**：基於 Kotlin、MVVM 與 Coroutines 開發的 Android 14~16（適配 ColorOS / Realme UI）系統輔助工具。透過 WindowManager 與自定義手勢攔截容器（InterceptFrameLayout），實作不干擾前景遊戲的半透明膠囊條與動態圓形懸浮球。",
           "**Xposed 框架層防熱點斷線守護**：使用 VectorLegacyBridge 針對 system_server 進程中的 WifiServiceImpl.stopSoftAp() 進行 Method Hook，攔截系統省電與溫控策略強制關閉熱點；並透過 Root 協程監聽 wlan2 虛擬網卡狀態，在斷線時自動重新喚醒。",
           "**高通／ColorOS 溫控暫停機制**：透過發送 SIGSTOP 信號掛起 thermal-engine-v2 守護進程並禁用 sysfs 溫控分區，同時維持 HAL 層正常通訊（SIGCONT），在不卡死系統服務、相容遊戲模式且無需重啟的前提下暫停系統溫控。",
-          "**全域硬體隱私 HUD 與開發者中心**：即時解析底層 AppOps 狀態，動態懸浮提示背景應用的相機（CAM）、麥克風（MIC）、定位（GPS）與錄屏（REC）調用；並整合 USB/無線偵錯自動解析、模擬位置與 LSPosed 快捷入口。"
+          "**全域硬體隱私 HUD 與開發者中心**：即時解析底層 AppOps 狀態，動態懸浮提示背景應用的相機（CAM）、麥克風（MIC）、定位（GPS）與錄屏（REC）調用；並整合 USB/無線偵錯、模擬位置等開發人員選項的快速開關與 LSPosed 快捷入口。"
         ]
       },
       {
