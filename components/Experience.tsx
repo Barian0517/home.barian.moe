@@ -72,7 +72,7 @@ const categories: Category[] = [
         id: "android-system-dev",
         title: "Android 底層開發與系統調校 (Android Internals & Hooking)",
         description: [
-          "**Android 漏洞與免解鎖提權架構**：在未解鎖 Bootloader 的裝置上，透過 Linux 內核與 Android 運行時漏洞（gghostlock / DirtyFrag 機制）掛載 KernelSU（OverlayFS）與 Vector 運行時框架（RAM Hook），並配置 Systemless 無損修改與環境隱藏（HMA / Shamiko）。",
+          "**Android 漏洞與免解鎖提權架構**：在未解鎖 Bootloader 的裝置上，透過 Linux 內核與 Android 運行時漏洞（ghostlock / DirtyFrag 機制）掛載 KernelSU（OverlayFS）與 Vector 運行時框架（RAM Hook），並配置 Systemless 無損修改與環境隱藏（HMA / Shamiko）。",
           "**Xposed / LSPosed 與 Vector 框架開發**：基於 de.robv.android.xposed（API 82）與 VectorLegacyBridge 架構，針對系統核心進程（system_server）及 Android Framework（WifiServiceImpl、WindowManagerService）實作 Method Hooking，並處理 Android 16 / ColorOS 16 上因 ART deoptimize 導致的攔截相容性問題。",
           "**Linux 內核調度與高通溫控逆向**：拆解 Android 三層溫控架構（守護程式、sysfs 內核節點、HAL 層），透過 POSIX 進程信號（SIGSTOP / SIGCONT）與 sysfs 動態覆寫，在不卡死 Binder HAL 且無需重啟的前提下暫停溫控降頻。",
           "**原生 Android 系統級應用開發**：使用 Kotlin、MVVM 與 Coroutines 開發常駐型（Foreground Service）輔助工具，實作 WindowManager 懸浮窗覆蓋、自定義手勢攔截分發（InterceptFrameLayout）與 AppOps 權限狀態即時讀取。"
